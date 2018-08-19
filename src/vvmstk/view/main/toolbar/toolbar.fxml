@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="445.0" prefWidth="230.0" stylesheets="@../../../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vvmstk.view.main.toolbar.Toolbar">
+    <JFXButton contentDisplay="TOP" onAction="#loadGroup" prefHeight="400.0" prefWidth="230.0" styleClass="toolbar-button" text="Навчальні групи" textAlignment="CENTER">
+        <graphic>
+          <FontAwesomeIconView glyphName="USER" size="25" />
+        </graphic>
+    </JFXButton>
+    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="10.0" onAction="#loadRetraining" prefHeight="400.0" prefWidth="230.0" styleClass="toolbar-button" text="Перепідготовка" textAlignment="CENTER">
+        <graphic>
+          <FontAwesomeIconView glyphName="CAR" size="25" />
+        </graphic>
+    </JFXButton>
+    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="36.0" onAction="#loadAccounting" prefHeight="400.0" prefWidth="230.0" styleClass="toolbar-button" text="Бухгалтерія" textAlignment="CENTER">
+        <graphic>
+          <FontAwesomeIconView glyphName="DOLLAR" size="25" />
+        </graphic>
+    </JFXButton>
+    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="62.0" onAction="#loadSetting" prefHeight="400.0" prefWidth="230.0" styleClass="toolbar-button" text="Налаштування" textAlignment="CENTER">
+        <graphic>
+          <FontAwesomeIconView glyphName="COG" size="25" />
+        </graphic>
+    </JFXButton>
+</VBox>

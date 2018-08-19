@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="600.0" prefWidth="1024.0" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vvmstk.view.student.student">
+   <top>
+       <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #24282f;" BorderPane.alignment="CENTER">
+         <FontAwesomeIconView fill="yellow" glyphName="GROUP" size="24" />
+           <JFXComboBox id="group-field" fx:id="groups" onAction="#groupAction" prefHeight="26.0" prefWidth="136.0" promptText="ГРУПИ" />
+           <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="4.0" />
+           <JFXButton disable="true">
+              <graphic>
+                  <FontAwesomeIconView fill="yellow" glyphName="PLUS_CIRCLE" size="24" />
+              </graphic>
+           </JFXButton>
+           <JFXButton layoutX="160.0" layoutY="11.0">
+              <graphic>
+                  <FontAwesomeIconView fill="yellow" glyphName="PENCIL_SQUARE" size="24" />
+              </graphic>
+           </JFXButton>
+           <JFXButton layoutX="226.0" layoutY="11.0">
+              <graphic>
+                  <FontAwesomeIconView fill="yellow" glyphName="TRASH" size="24" />
+              </graphic>
+           </JFXButton>
+           <Separator layoutX="150.0" layoutY="10.0" orientation="VERTICAL" prefHeight="0.0" prefWidth="4.0" />
+           <JFXTextField promptText="SEARCH" />
+           <JFXButton>
+              <graphic>
+                  <FontAwesomeIconView fill="yellow" glyphName="SEARCH" size="24" />
+              </graphic>
+           </JFXButton>
+           <JFXButton layoutX="600.0" layoutY="10.0" onAction="#settingAction">
+              <graphic>
+                  <FontAwesomeIconView fill="yellow" glyphName="INDENT" size="24" />
+              </graphic>
+            <tooltip>
+               <Tooltip text="НАЛАШТУВАННЯ ГРУПИ" />
+            </tooltip>
+           </JFXButton>
+         <JFXButton layoutX="281.0" layoutY="10.0" onAction="#importBtnAction">
+            <graphic>
+               <FontAwesomeIconView fill="#f20303" glyphName="ARROW_CIRCLE_DOWN" size="24" />
+            </graphic>
+         </JFXButton>
+       </ToolBar>
+   </top>
+   <center>
+       <SplitPane dividerPositions="0.3416" prefHeight="160.0" prefWidth="200.0" style="-fx-background-color: #24282f;" BorderPane.alignment="CENTER">
+           <StackPane>
+               <TableView fx:id="studentTable" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #24282f;">
+                   <columns>
+                       <TableColumn prefWidth="75.0" text="id" visible="false">
+                           <cellValueFactory>
+                               <PropertyValueFactory property="id" />
+                           </cellValueFactory>
+                       </TableColumn>
+                       <TableColumn prefWidth="110.0" text="ПРІЗВИЩЕ">
+                           <cellValueFactory>
+                               <PropertyValueFactory property="Surname" />
+                           </cellValueFactory>
+                       </TableColumn>
+                       <TableColumn prefWidth="110.0" text="ІМʼЯ">
+                           <cellValueFactory>
+                               <PropertyValueFactory property="Firstname" />
+                           </cellValueFactory>
+                       </TableColumn>
+                       <TableColumn prefWidth="110.0" text="ПО БАТЬКОВІ">
+                           <cellValueFactory>
+                               <PropertyValueFactory property="Middlename" />
+                           </cellValueFactory>
+                       </TableColumn>
+                   </columns>
+               </TableView>
+           </StackPane>
+           <VBox prefHeight="350.0" prefWidth="821.0">
+               <FlowPane prefHeight="69.0" prefWidth="686.0" style="-fx-background-color: yellow;">
+                   <Separator layoutX="160.0" layoutY="10.0" orientation="VERTICAL" prefHeight="50.0" prefWidth="2.0">
+                  <FlowPane.margin>
+                     <Insets left="150.0" />
+                  </FlowPane.margin></Separator>
+                   <Label fx:id="groupLabel" layoutX="181.0" layoutY="14.0" styleClass="group-fields" text="ГРУПА">
+                       <graphic>
+                           <FontAwesomeIconView glyphName="GROUP" size="18" />
+                       </graphic>
+                  <FlowPane.margin>
+                     <Insets left="10.0" right="20.0" />
+                  </FlowPane.margin>
+                   </Label>
+                   <Label fx:id="kategLabel" layoutX="266.0" layoutY="14.0" styleClass="group-fields" text="КАТЕГОРІЯ">
+                       <graphic>
+                           <FontAwesomeIconView glyphName="CAR" size="18" />
+                       </graphic>
+                  <FlowPane.margin>
+                     <Insets right="20.0" />
+                  </FlowPane.margin>
+                   </Label>
+                   <Label fx:id="dataBLabel" layoutX="381.0" layoutY="14.0" styleClass="group-fields" text="ДАТА ПОЧАТКУ" wrapText="true">
+                       <graphic>
+                           <FontAwesomeIconView glyphName="CALENDAR" size="18" />
+                       </graphic>
+                  <FlowPane.margin>
+                     <Insets right="10.0" />
+                  </FlowPane.margin>
+                   </Label>
+                   <Label fx:id="dataELabel" layoutX="517.0" layoutY="14.0" styleClass="group-fields" text="ДАТА ЗАКІНЧЕННЯ" wrapText="true">
+                       <graphic>
+                           <FontAwesomeIconView glyphName="CALENDAR" size="18" />
+                       </graphic>
+                  <FlowPane.margin>
+                     <Insets />
+                  </FlowPane.margin>
+                   </Label>
+               </FlowPane>
+               <Pane prefHeight="176.0" prefWidth="669.0" style="-fx-background-color: #24282f;">
+                   <ImageView id="image-student" fx:id="imageStudent" fitHeight="154.0" fitWidth="125.0" layoutX="16.0" layoutY="-46.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" styleClass="image-student">
+                       <Image url="@../../img/user-silhouette.png" />
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+                  
+                   </ImageView>
+                   <JFXTextField fx:id="surnameField" labelFloat="true" layoutX="180.0" layoutY="14.0" promptText="ПРІЗВИЩЕ" unFocusColor="#4d4d4d" />
+
+                   <JFXTextField fx:id="firstnameField" labelFloat="true" layoutX="180.0" layoutY="63.0" promptText="ІМʼЯ" />
+                   <JFXTextField fx:id="middlenameField" labelFloat="true" layoutX="180.0" layoutY="116.0" promptText="ПО БАТЬКОВІ" />
+                   <JFXTextField fx:id="innField" labelFloat="true" layoutX="413.0" layoutY="63.0" promptText="ІПН" />
+                   <JFXDatePicker fx:id="dataBField" layoutX="413.0" layoutY="14.0" promptText="ДАТА НАРОДЖЕННЯ" />
+               <FontAwesomeIconView glyphName="DROPBOX" layoutX="55.0" layoutY="136.0" onMouseClicked="#downloadFromDropbox" size="24" styleClass="image_d" textAlignment="CENTER">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+               </FontAwesomeIconView>
+               <FontAwesomeIconView glyphName="FILE_IMAGE_ALT" layoutX="16.0" layoutY="136.0" onMouseClicked="#downloadImage" size="24" styleClass="image_d" textAlignment="CENTER">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+               </FontAwesomeIconView>
+               </Pane>
+               <Pane layoutX="10.0" layoutY="79.0" prefHeight="111.0" prefWidth="669.0" style="-fx-background-color: #24282f;">
+                   <JFXTextField fx:id="paspField" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="207.0" promptText="СЕРІЯ ТА НОМЕР ПАСПОРТУ" />
+                   <JFXTextField fx:id="paspVydField" labelFloat="true" layoutX="274.0" layoutY="14.0" prefHeight="33.0" prefWidth="377.0" promptText="ВИДАНИЙ" />
+                   <JFXTextField fx:id="addressField" labelFloat="true" layoutX="199.0" layoutY="64.0" prefHeight="33.0" prefWidth="464.0" promptText="АДРЕСА" />
+                   <JFXDatePicker fx:id="paspDataField" layoutX="14.0" layoutY="64.0" prefHeight="33.0" prefWidth="161.0" promptText="ДАТА ВИДАЧИ" />
+               </Pane>
+               <Pane layoutX="10.0" layoutY="175.0" prefHeight="121.0" prefWidth="669.0" style="-fx-background-color: #24282f;">
+                   <JFXTextField fx:id="medNumField" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="33.0" prefWidth="341.0" promptText="СЕРІЯ ТА НОМЕР МЕДИЧНОЇ ДОВІДКИ">
+                  <opaqueInsets>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </opaqueInsets></JFXTextField>
+                   <JFXTextField fx:id="hospField" labelFloat="true" layoutX="14.0" layoutY="60.0" prefHeight="26.0" prefWidth="531.0" promptText="ЗАКЛАД ЩО ВИДАВ">
+                  <opaqueInsets>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </opaqueInsets></JFXTextField>
+                   <JFXDatePicker fx:id="dataMedField" layoutX="388.0" layoutY="14.0" prefHeight="33.0" prefWidth="157.0" promptText="ДАТА ВИДАЧИ">
+                  <opaqueInsets>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </opaqueInsets></JFXDatePicker>
+               </Pane>
+               <FlowPane VBox.vgrow="ALWAYS">
+                   <Label onMouseClicked="#contractAction" styleClass="label_print" text="ДОГОВІР">
+                       <font>
+                           <Font size="24.0" />
+                       </font>
+                       <FlowPane.margin>
+                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                       </FlowPane.margin>
+                   </Label>
+                   <Label onMouseClicked="#driveAction" styleClass="label_print" text="КАРТКА ВОДІЯ">
+                       <font>
+                           <Font size="24.0" />
+                       </font>
+                       <FlowPane.margin>
+                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                       </FlowPane.margin>
+                   </Label>
+                   <Label onMouseClicked="#orderAction" styleClass="label_print" text="ЗАЯВКА">
+                       <font>
+                           <Font size="24.0" />
+                       </font>
+                       <FlowPane.margin>
+                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                       </FlowPane.margin>
+                   </Label>
+                   <Label onMouseClicked="#anketaAction" styleClass="label_print" text="АНКЕТА">
+                       <font>
+                           <Font size="24.0" />
+                       </font>
+
+                       <FlowPane.margin>
+                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                       </FlowPane.margin>
+                   </Label>
+               </FlowPane>
+           </VBox>
+       </SplitPane>
+   </center>
+</BorderPane>

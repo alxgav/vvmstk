@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="315.0" prefWidth="391.0" stylesheets="/vvmstk/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vvmstk.view.login.LoginController">
+    <opaqueInsets>
+        <Insets />
+    </opaqueInsets>
+    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="150.0" styleClass="root" stylesheets="@../../style.css">
+        <ImageView fitHeight="151.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../img/gerb_tsou.png" />
+        </ImageView>
+        <Label text="Володимир-Волинський МСТК ТСОУ" textAlignment="CENTER" textFill="#fcf8f8" wrapText="true" />
+    </VBox>
+    <JFXTextField fx:id="loginText" labelFloat="true" layoutX="164.0" layoutY="147.0" prefHeight="26.0" prefWidth="218.0" promptText="LOGIN" />
+    <JFXPasswordField fx:id="passwordText" labelFloat="true" layoutX="164.0" layoutY="200.0" prefHeight="26.0" prefWidth="218.0" promptText="PASSWORD" />
+    <JFXButton layoutX="161.0" layoutY="276.0" onAction="#loginBtnAction" prefHeight="46.0" prefWidth="218.0" stylesheets="@../../style.css" text="login">
+        <opaqueInsets>
+          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </opaqueInsets>
+    </JFXButton>
+    <JFXButton layoutX="161.0" layoutY="330.0" onAction="#canselBtnAction" prefHeight="46.0" prefWidth="218.0" stylesheets="@../../style.css" text="cansel">
+        <opaqueInsets>
+          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </opaqueInsets>
+    </JFXButton>
+   <FontAwesomeIconView glyphName="CLOSE" layoutX="364.0" layoutY="28.0" onMouseClicked="#exitAction" size="20">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </FontAwesomeIconView>
+</AnchorPane>
