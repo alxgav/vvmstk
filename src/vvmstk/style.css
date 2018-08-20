@@ -31,7 +31,9 @@
 .context-menu
 {
     -fx-background-color:  derive(-fx-primary, 20%);
+    -fx-text-fill: -fx-secondary ;
 }
+
 
 .button:hover, .button:focused{
     -fx-border-color: -fx-secondary;
@@ -41,7 +43,7 @@
 .text-field
 {
     /*-fx-text-fill: -fx-primarytext;*/
-    -fx-font-size : 13pt;
+    -fx-font-size : 14pt;
     -jfx-focus-color: -fx-secondary;
     -fx-text-fill: derive(-fx-secondary, 20%);
 }
@@ -69,7 +71,7 @@
 .main-text
 {
     -fx-fill: -fx-secondary;
-    -fx-font-size: 13pt;
+    -fx-font-size: 14pt;
     -fx-text-alignment: center;
 }
 
@@ -96,7 +98,7 @@
 /*TableView Default*/
 .table-view{
     -fx-background-color: derive(-fx-primary, 10%);
-    -fx-font-size: 16px;
+    -fx-font-size: 14px;
 }
 .table-view:focused{
     -fx-background-color: derive(-fx-primary, 20%);
@@ -126,7 +128,7 @@
     -fx-table-cell-border-color: transparent;
 }
 .table-column{
-    -fx-alignment: LEFT;
+    -fx-alignment: top-left;
 }
 .table-row-cell:even{
     -fx-background-color: derive(-fx-primary, 10%);

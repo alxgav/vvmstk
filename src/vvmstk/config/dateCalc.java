@@ -41,7 +41,8 @@ public class dateCalc {
 
   public ArrayList<Object> listOfDayas(LocalDate d1,  int days) throws IOException, ParseException {
         ArrayList <Object> o = new ArrayList();
-        //ArrayList <Object> holydays = new  config().getListofValues("holydays");
+        ArrayList <Object> holydays = new  config().getListofValues("holydays");
+        ArrayList <Object> workdays = new config().getListofValues("workdays");
         if (days < 1){
             return null;
         }
@@ -49,9 +50,17 @@ public class dateCalc {
         LocalDate day = d1.minusDays(1);
         while (d < days ){
             day = day.plusDays(1);
-//            for (Object l: holydays){
-//                System.out.println(l);
-//            }
+            for(Object l: holydays){
+                if (l.equals(day.toString())){
+                    day =  day.plusDays(1);
+                }
+            }
+            for (Object l: workdays){
+                if (l.equals(day.toString())){
+                    o.add(day);
+                    d++;
+                }
+            }
             if(!(day.getDayOfWeek() == DayOfWeek.SATURDAY || day.getDayOfWeek() == DayOfWeek.SUNDAY)){
                 o.add(day);
                 d++;

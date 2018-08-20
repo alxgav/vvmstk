@@ -1,5 +1,7 @@
 package vvmstk.view.retraining.data;
 
+import vvmstk.config.CustomDate;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +31,31 @@ public class R_data {
         this.dataStady = dataStady;
     }
 
+    public R_data(Object r_id, Date dateBegin, Date dateEnd, String kateg, String instr, String car, String numDov, Date dateV, ArrayList<LocalDate> dataStady) {
+        this.r_id = r_id;
+        this.dateBegin = dateBegin;
+        this.dateEnd = dateEnd;
+        this.kateg = kateg;
+        this.instr = instr;
+        this.car = car;
+        this.numDov = numDov;
+        this.dateV = dateV;
+        this.dataStady = dataStady;
+    }
+
+//    public R_data(Date dateBegin, Date dateEnd, String kateg, String instr, String car, String numDov, Date dateV, ArrayList<LocalDate> dataStady) {
+//        this.dateBegin = dateBegin;
+//        this.dateEnd = dateEnd;
+//        this.kateg = kateg;
+//        this.instr = instr;
+//        this.car = car;
+//        this.numDov = numDov;
+//        this.dateV = dateV;
+//        this.dataStady = dataStady;
+//    }
+
+
+
     public Object getId() {
         return id;
     }
@@ -46,7 +73,7 @@ public class R_data {
     }
 
     public Date getDateBegin() {
-        return dateBegin;
+        return new CustomDate (dateBegin.getTime());
     }
 
     public void setDateBegin(Date dateBegin) {
@@ -54,7 +81,7 @@ public class R_data {
     }
 
     public Date getDateEnd() {
-        return dateEnd;
+        return new CustomDate (dateEnd.getTime());
     }
 
     public void setDateEnd(Date dateEnd) {
@@ -94,7 +121,7 @@ public class R_data {
     }
 
     public Date getDateV() {
-        return dateV;
+        return new CustomDate(dateV.getTime());
     }
 
     public void setDateV(Date dateV) {

@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 
 public class Main implements Initializable {
 
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     @FXML
     private JFXHamburger hamburger;

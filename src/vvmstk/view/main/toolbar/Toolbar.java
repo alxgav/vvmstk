@@ -33,17 +33,16 @@ public class Toolbar implements Initializable {
     }
 
     @FXML
-    private void loadRetraining(ActionEvent actionEvent) throws IOException {
-       // loadContent("/vvmstk/view/retraining/retraining.fxml");
+    private void loadRetraining() throws IOException {
         Main.setNode(FXMLLoader.load(getClass().getResource("/vvmstk/view/retraining/retraining.fxml")));
     }
 
     @FXML
-    private void loadAccounting(ActionEvent actionEvent) {
+    private void loadAccounting() {
     }
 
     @FXML
-    private void loadSetting(ActionEvent actionEvent) {
+    private void loadSetting() {
     }
 
     public static Object loadWindow(URL loc, String title, Stage parentStage) {

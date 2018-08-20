@@ -21,7 +21,7 @@
          <Cursor fx:constant="HAND" />
       </cursor>
    </FontAwesomeIconView>
-   <JFXButton layoutX="14.0" layoutY="345.0" text="Зберігти">
+   <JFXButton onAction="#btnSave" layoutX="14.0" layoutY="345.0" text="Зберігти">
       <graphic>
          <FontAwesomeIconView glyphName="SAVE" size="24" />
       </graphic>

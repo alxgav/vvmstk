@@ -9,17 +9,21 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vvmstk.view.retraining.retrainingController">
    <top>
@@ -35,14 +39,31 @@
        </ToolBar>
    </top>
    <left>
-      <TableView prefHeight="338.0" prefWidth="360.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="studentTable" BorderPane.alignment="CENTER_LEFT">
         <columns>
-          <TableColumn prefWidth="120.0" text="Призвіще" />
-          <TableColumn prefWidth="120.0" text="Ім'я" />
-          <TableColumn prefWidth="120.0" text="По батькові" />
+            <TableColumn prefWidth="50.0" text="ID" visible="false">
+                <cellValueFactory>
+                    <PropertyValueFactory property="id" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn prefWidth="120.0" text="Призвіще">
+                <cellValueFactory>
+                    <PropertyValueFactory property="surname" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn prefWidth="120.0" text="Ім'я">
+                <cellValueFactory>
+                    <PropertyValueFactory property="firstname" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn prefWidth="120.0" text="По батькові">
+                <cellValueFactory>
+                    <PropertyValueFactory property="middlename" />
+                </cellValueFactory>
+            </TableColumn>
         </columns>
          <BorderPane.margin>
-            <Insets />
+            <Insets right="3.0" />
          </BorderPane.margin>
       </TableView>
    </left>
@@ -68,26 +89,64 @@
                    </VBox.margin>
                </JFXTextField>
            </VBox>
-           <FontAwesomeIconView glyphName="USER" layoutX="32.0" layoutY="209.0" size="32">
+           <FontAwesomeIconView glyphName="UPLOAD" layoutX="32.0" layoutY="209.0" size="32">
             <cursor>
                <Cursor fx:constant="HAND" />
             </cursor></FontAwesomeIconView>
-           <TableView AnchorPane.topAnchor="250.0">
+           <TableView fx:id="reatraingTable" prefHeight="239.0" prefWidth="852.0" AnchorPane.topAnchor="250.0">
                <columns>
-                   <TableColumn prefWidth="150.0" text="Дата початку" />
-                   <TableColumn prefWidth="150.0" text="Дата закінчення" />
-                   <TableColumn prefWidth="100.0" text="Категорія" />
-                   <TableColumn prefWidth="150.0" text="ТЗ" />
-                   <TableColumn prefWidth="150.0" text="Спеціаліст" />
-                   <TableColumn prefWidth="150.0" text="Номер довідки" />
+                   <TableColumn prefWidth="0.0" text="ID" visible="false">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="id" />
+                       </cellValueFactory>
+                   </TableColumn>
+                   <TableColumn prefWidth="150.0" text="Дата початку">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="dateBegin" />
+                       </cellValueFactory>
+                   </TableColumn>
+                   <TableColumn prefWidth="150.0" text="Дата закінчення">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="dateEnd" />
+                       </cellValueFactory>
+                   </TableColumn>
+                   <TableColumn prefWidth="100.0" text="Категорія">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="kateg" />
+                       </cellValueFactory>
+                   </TableColumn>
+                   <TableColumn prefWidth="150.0" text="ТЗ">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="car" />
+                       </cellValueFactory>
+                   </TableColumn>
+                   <TableColumn prefWidth="150.0" text="Спеціаліст">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="instr" />
+                       </cellValueFactory>
+                   </TableColumn>
+                   <TableColumn prefWidth="150.0" text="Номер довідки">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="numDov" />
+                       </cellValueFactory>
+                   </TableColumn>
                </columns>
                <contextMenu>
                    <ContextMenu>
                        <items>
-                           <MenuItem mnemonicParsing="false" onAction="#addDov" text="Додати" />
-                           <MenuItem mnemonicParsing="false" text="Редагувати" />
+                           <MenuItem mnemonicParsing="false" onAction="#addDov" text="Додати">
+                        <graphic>
+                           <FontAwesomeIconView glyphName="PLUS" size="24" />
+                        </graphic></MenuItem>
+                           <MenuItem mnemonicParsing="false" text="Редагувати">
+                        <graphic>
+                           <FontAwesomeIconView glyphName="EDIT" size="24" />
+                        </graphic></MenuItem>
                            <SeparatorMenuItem mnemonicParsing="false" />
-                           <MenuItem mnemonicParsing="false" text="Видалити" />
+                           <MenuItem mnemonicParsing="false" onAction="#delRetraining" text="Видалити">
+                        <graphic>
+                           <FontAwesomeIconView glyphName="MINUS" size="24" />
+                        </graphic></MenuItem>
                        </items>
                    </ContextMenu>
                </contextMenu>
@@ -104,7 +163,7 @@
                      <Cursor fx:constant="HAND" />
                   </cursor>
                </FontAwesomeIconView>
-               <FontAwesomeIconView glyphName="EDIT"  onMouseClicked="#editUser" layoutX="10.0" layoutY="100.0"  size="48">
+               <FontAwesomeIconView glyphName="EDIT" layoutX="10.0" layoutY="100.0" onMouseClicked="#editUser" size="48">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor>
@@ -116,6 +175,31 @@
                </FontAwesomeIconView>
             </children>
          </VBox>
+         <FontAwesomeIconView glyphName="DROPBOX" layoutX="74.0" layoutY="208.0" size="32">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </FontAwesomeIconView>
+         <FlowPane layoutX="20.0" layoutY="496.0" prefHeight="85.0" prefWidth="442.0" rowValignment="TOP">
+            <children>
+                 <Label styleClass="label_print" text="Картка водія">
+                     <font>
+                         <Font size="24.0" />
+                     </font>
+                  <FlowPane.margin>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </FlowPane.margin>
+                 </Label>
+                 <Label styleClass="label_print" text="Довідка">
+                     <font>
+                         <Font size="24.0" />
+                     </font>
+                  <FlowPane.margin>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </FlowPane.margin>
+                 </Label>
+            </children>
+         </FlowPane>
        </AnchorPane>
    </center>
 </BorderPane>
