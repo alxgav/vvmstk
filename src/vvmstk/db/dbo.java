@@ -6,7 +6,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 import vvmstk.config.common;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -25,6 +24,10 @@ public class dbo {
     }
     public void updateDataID(MongoCollection<Document> collection,Object fieldData, Document document){
         UpdateResult updateResult = collection.updateOne(eq("_id", fieldData),new Document("$set",document));
+        updateResult.getModifiedCount();
+    }
+    public void updateDataID(MongoCollection<Document> collection,String fieldname, Object fieldData, Document document){
+        UpdateResult updateResult = collection.updateOne(eq(fieldname, fieldData),new Document("$set",document));
         updateResult.getModifiedCount();
     }
     public void deleteData(MongoCollection<Document> collection,String field, Object value){

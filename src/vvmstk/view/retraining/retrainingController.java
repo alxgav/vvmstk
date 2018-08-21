@@ -1,6 +1,6 @@
 package vvmstk.view.retraining;
 
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import com.mongodb.client.MongoCursor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,17 +8,24 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import vvmstk.db.db.Teacher;
 import vvmstk.db.dbo;
 import vvmstk.view.retraining.data.R_data;
 import vvmstk.view.retraining.data.Student;
@@ -51,6 +58,8 @@ public class retrainingController  implements Initializable {
     private TableView <R_data> reatraingTable;
     @FXML
     private TableView<Student> studentTable;
+    @FXML
+    private StackPane printPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -212,4 +221,66 @@ public class retrainingController  implements Initializable {
         }
     }
 
+    @FXML
+    private void kartkaAction(MouseEvent mouseEvent) {
+    }
+
+    @FXML
+    private void dovAction() {
+        String dov = reatraingTable.getSelectionModel().getSelectedItem().getNumDov();
+        if (dov.isEmpty()){
+            JFXTextField dovText = new JFXTextField();
+            dovText.setPromptText("№ ДОВІДКИ");
+            dovText.setLabelFloat(false);
+            dovText.setPrefSize(150, 50);
+            dovText.setPadding(new Insets(10, 5, 10, 5));
+            dovText.setStyle("-fx-font-size:13px; -fx-font-weight:bold;-fx-text-fill:#2A2E37");
+
+            VBox vb = new VBox();
+            vb.setSpacing(8);
+            vb.getChildren().addAll(dovText);
+
+            // Heading text
+            Text t = new Text("ДОВІДКА ПРО ЗАКІНЧЕННЯ ПЕРЕПІДГОТОВКИ");
+            t.setStyle("-fx-font-size:14px;");
+
+            JFXDialogLayout dialogLayout = new JFXDialogLayout();
+            dialogLayout.setHeading(t);
+            dialogLayout.setPrefSize(300,50);
+
+            dialogLayout.setBody(vb);
+
+            JFXDialog dialog = new JFXDialog(printPane, dialogLayout, JFXDialog.DialogTransition.CENTER);
+            //dialog.setPrefHeight(50);
+            // close button
+            JFXButton closeButton = new JFXButton("Відмінити");
+            closeButton.setStyle("-fx-button-type: RAISED;-fx-background-color: rgb(77,102,204);-fx-font-size: 14px;-fx-text-fill: WHITE;");
+            //Add button
+            JFXButton addBtn = new JFXButton("Додати");
+            addBtn.setStyle("-fx-button-type: RAISED;-fx-background-color: rgb(77,102,204);-fx-font-size: 14px;-fx-text-fill: WHITE;"
+                    + "");
+            closeButton.setOnAction((ActionEvent event1) -> {
+                dialog.close();
+            });
+            addBtn.setOnAction((ActionEvent event1) -> {
+                Object _id = reatraingTable.getSelectionModel().getSelectedItem().getId();
+                database.updateDataID(database.getCollection("retraining"),_id,new Document("numDov", dovText.getText()));
+
+                dialog.close();
+            });
+
+            HBox box=new HBox();
+            box.setSpacing(10);
+            box.setPrefSize(200, 50);
+            box.setAlignment(Pos.CENTER_RIGHT);
+            box.getChildren().addAll(addBtn,closeButton);
+
+            dialogLayout.setActions(box);
+
+            dialog.show();
+        } else {
+
+        }
+
+    }
 }
