@@ -39,6 +39,12 @@ public class Student {
         this.foto = foto;
     }
 
+    public Student( String surname, String firstname, String middlename) {
+        this.surname = surname;
+        this.firstname = firstname;
+        this.middlename = middlename;
+    }
+
     public Object getId() {
         return id;
     }

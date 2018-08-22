@@ -1,6 +1,10 @@
 package vvmstk.view.retraining;
 
-import com.jfoenix.controls.*;
+import com.dropbox.core.DbxException;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXTextField;
 import com.mongodb.client.MongoCursor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -23,13 +29,19 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import jxl.read.biff.BiffException;
+import jxl.write.WriteException;
 import org.bson.Document;
-import org.bson.types.ObjectId;
-import vvmstk.db.db.Teacher;
+import vvmstk.config.image.imageIO;
 import vvmstk.db.dbo;
 import vvmstk.view.retraining.data.R_data;
 import vvmstk.view.retraining.data.Student;
+import vvmstk.xls.Raport;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -41,9 +53,11 @@ import java.util.ResourceBundle;
 import static com.mongodb.client.model.Filters.eq;
 
 public class retrainingController  implements Initializable {
-    ObservableList<R_data> retrainingDataList = FXCollections.observableArrayList();
-    ObservableList <Student> studentList = FXCollections.observableArrayList();
-    Object id;
+    private ObservableList<R_data> retrainingDataList = FXCollections.observableArrayList();
+    private ObservableList <Student> studentList = FXCollections.observableArrayList();
+    private Object id;
+    private R_data r_data;
+    private imageIO img = new imageIO();
 
     private Student student;
     @FXML
@@ -60,6 +74,8 @@ public class retrainingController  implements Initializable {
     private TableView<Student> studentTable;
     @FXML
     private StackPane printPane;
+    @FXML
+    private ImageView imageStudent;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -88,6 +104,7 @@ public class retrainingController  implements Initializable {
         dialog.setDialogStage(dialogStage,id);
         dialog.setRetrainingData(retrainingDataList);
         dialogStage.showAndWait();
+        getRetrainingById(id);
 
     }
 
@@ -102,11 +119,12 @@ public class retrainingController  implements Initializable {
         firstname.setDisable(b);
         middlename.setDisable(b);
     }
-    private void setStudent(Student student){
+    private void setStudent(Student student) throws IOException {
         surname.setText(student.getSurname());
         firstname.setText(student.getFirstname());
         middlename.setText(student.getMiddlename());
         id = student.getId();
+        img.getFoto(student.getFoto(), imageStudent);
 
 
     }
@@ -164,10 +182,44 @@ public class retrainingController  implements Initializable {
                     newValue.getFirstname(),
                     newValue.getMiddlename(),
                     newValue.getFoto());
-            setStudent(student);
+            try {
+                setStudent(student);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             getRetrainingById(newValue.getId());
         });
     }
+
+    private void setFoto(Object id)throws IOException{
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BufferedImage originalImage = ImageIO.read(new File("tmp_img/out.jpg"));
+        ImageIO.write(originalImage, "jpg", baos);
+        baos.flush();
+        database.updateDataID(database.getCollection("restudent"),id,new Document("foto",baos.toByteArray()));
+    }
+
+    private void printDovidka(R_data r_data) throws WriteException, IOException, BiffException {
+        new Raport().make_dovidka(getSt(),r_data);
+        new Raport().openFILE("out/tmp.xls");
+    }
+
+    private Student getSt(){
+        return new Student(studentTable.getSelectionModel().getSelectedItem().getSurname(),
+                studentTable.getSelectionModel().getSelectedItem().getFirstname(),
+                studentTable.getSelectionModel().getSelectedItem().getMiddlename());
+
+
+
+    }
+    private R_data getR_data(){
+        return new R_data(reatraingTable.getSelectionModel().getSelectedItem().getKateg(),
+                reatraingTable.getSelectionModel().getSelectedItem().getInstr(),
+                reatraingTable.getSelectionModel().getSelectedItem().getCar(),
+                reatraingTable.getSelectionModel().getSelectedItem().getNumDov(),
+                reatraingTable.getSelectionModel().getSelectedItem().getDataStady());
+    }
+
 
 
     @FXML
@@ -187,7 +239,6 @@ public class retrainingController  implements Initializable {
                 .append("dataB",student.getDataB())
                 .append("foto", student.getFoto());
         database.insertData(database.getCollection("restudent"), doc);
-        //studentList.add(student);
         getStudent();
     }
 
@@ -226,8 +277,9 @@ public class retrainingController  implements Initializable {
     }
 
     @FXML
-    private void dovAction() {
+    private void dovAction() throws BiffException, IOException, WriteException {
         String dov = reatraingTable.getSelectionModel().getSelectedItem().getNumDov();
+        r_data = getR_data();
         if (dov.isEmpty()){
             JFXTextField dovText = new JFXTextField();
             dovText.setPromptText("№ ДОВІДКИ");
@@ -238,6 +290,7 @@ public class retrainingController  implements Initializable {
 
             VBox vb = new VBox();
             vb.setSpacing(8);
+
             vb.getChildren().addAll(dovText);
 
             // Heading text
@@ -251,21 +304,36 @@ public class retrainingController  implements Initializable {
             dialogLayout.setBody(vb);
 
             JFXDialog dialog = new JFXDialog(printPane, dialogLayout, JFXDialog.DialogTransition.CENTER);
-            //dialog.setPrefHeight(50);
             // close button
             JFXButton closeButton = new JFXButton("Відмінити");
-            closeButton.setStyle("-fx-button-type: RAISED;-fx-background-color: rgb(77,102,204);-fx-font-size: 14px;-fx-text-fill: WHITE;");
+            closeButton.setStyle("-fx-button-type: RAISED;-fx-background-color: rgb(36,42,43);-fx-font-size: 14px;-fx-text-fill: WHITE;");
             //Add button
             JFXButton addBtn = new JFXButton("Додати");
-            addBtn.setStyle("-fx-button-type: RAISED;-fx-background-color: rgb(77,102,204);-fx-font-size: 14px;-fx-text-fill: WHITE;"
+            addBtn.setStyle("-fx-button-type: RAISED;-fx-background-color: rgb(36,42,43);-fx-font-size: 14px;-fx-text-fill: WHITE;"
                     + "");
             closeButton.setOnAction((ActionEvent event1) -> {
                 dialog.close();
             });
             addBtn.setOnAction((ActionEvent event1) -> {
                 Object _id = reatraingTable.getSelectionModel().getSelectedItem().getId();
+                System.out.println("id "+id);
                 database.updateDataID(database.getCollection("retraining"),_id,new Document("numDov", dovText.getText()));
+                System.out.println("id "+id);
+                System.out.println("_id "+_id);
+                getRetrainingById(id);
+                if (!dovText.getText().isEmpty()){
+                    try {
+                        System.out.println(r_data.getInstr());
+                        printDovidka(r_data);
 
+                    } catch (WriteException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (BiffException e) {
+                        e.printStackTrace();
+                    }
+                }
                 dialog.close();
             });
 
@@ -278,9 +346,25 @@ public class retrainingController  implements Initializable {
             dialogLayout.setActions(box);
 
             dialog.show();
-        } else {
 
+
+        } else {
+            //printDovidka();
         }
 
+    }
+
+    @FXML
+    private void getImage() {
+    }
+
+    @FXML
+    private void getImageDropbox() throws IOException, DbxException {
+        img.getDropBox();
+        File fotoFile = new File("scan_img/tmp.jpg");
+        File f = new File("tmp_img/out.jpg");
+        img.scale(fotoFile, 168, 209, f);
+        imageStudent.setImage(new Image(f.toURI().toString()));
+        setFoto(id);
     }
 }

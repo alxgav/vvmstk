@@ -173,7 +173,8 @@ public class student implements Initializable {
         }
 
         try {
-            getFoto(student.getFoto());
+           // getFoto(student.getFoto());
+            img.getFoto(student.getFoto(),imageStudent);
         } catch (IOException e) {
             System.out.println("foto upsend");
         }
@@ -267,22 +268,9 @@ public class student implements Initializable {
         BufferedImage originalImage = ImageIO.read(new File("tmp_img/out.jpg"));
         ImageIO.write(originalImage, "jpg", baos);
         baos.flush();
-//        MongoCollection<Document> collection = database.getCollection("student");
-//        UpdateResult updateResult = collection.updateOne(eq("_id", id),new Document("$set",new Document("foto",baos.toByteArray())));
-//        updateResult.getModifiedCount();
         database.updateDataID(database.getCollection("student"),id,new Document("foto",baos.toByteArray()));
     }
 
-
-
-    private void getFoto(Binary foto) throws IOException {
-        if (foto!=null){
-            InputStream in = new ByteArrayInputStream(foto.getData());
-            BufferedImage bImageFromConvert = ImageIO.read(in);
-            ImageIO.write(bImageFromConvert, "png", new File("tmp_img/out.png"));
-            imageStudent.setImage(new Image(new File("tmp_img/out.png").toURI().toString()));
-        }
-    }
 
     @FXML
     private void contractAction() {

@@ -26,7 +26,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vvmstk.view.retraining.retrainingController">
+<BorderPane prefHeight="800.0" prefWidth="900.0" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vvmstk.view.retraining.retrainingController">
    <top>
        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
            <JFXDatePicker prefHeight="33.0" prefWidth="167.0" />
@@ -71,69 +71,66 @@
    <center>
        <StackPane fx:id="printPane" BorderPane.alignment="CENTER">
            <AnchorPane>
-               <ImageView fitHeight="192.0" fitWidth="152.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true"
-                          preserveRatio="true" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
-                   <Image url="@../../img/user-silhouette.png"/>
+               <ImageView fx:id="imageStudent" fitHeight="192.0" fitWidth="152.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+                   <Image url="@../../img/user-silhouette.png" />
                </ImageView>
                <VBox layoutX="185.0" layoutY="14.0" prefHeight="156.0" prefWidth="261.0" AnchorPane.topAnchor="20.0">
                    <JFXTextField fx:id="surname" labelFloat="true" promptText="SURNAME">
                        <VBox.margin>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                        </VBox.margin>
                    </JFXTextField>
-                   <JFXTextField fx:id="firstname" labelFloat="true" layoutX="20.0" layoutY="20.0"
-                                 promptText="FIRSTNAME">
+                   <JFXTextField fx:id="firstname" labelFloat="true" layoutX="20.0" layoutY="20.0" promptText="FIRSTNAME">
                        <VBox.margin>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                        </VBox.margin>
                    </JFXTextField>
-                   <JFXTextField fx:id="middlename" labelFloat="true" layoutX="10.0" layoutY="56.0"
-                                 promptText="MIDDLENAME">
+                   <JFXTextField fx:id="middlename" labelFloat="true" layoutX="10.0" layoutY="56.0" promptText="MIDDLENAME">
                        <VBox.margin>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                        </VBox.margin>
                    </JFXTextField>
                </VBox>
-               <FontAwesomeIconView glyphName="UPLOAD" layoutX="32.0" layoutY="209.0" size="32">
+               <FontAwesomeIconView glyphName="UPLOAD" layoutX="32.0" layoutY="209.0" onMouseClicked="#getImage" size="32">
                    <cursor>
-                       <Cursor fx:constant="HAND"/>
+                       <Cursor fx:constant="HAND" />
                    </cursor>
              </FontAwesomeIconView>
                <TableView fx:id="reatraingTable" prefHeight="239.0" prefWidth="852.0" AnchorPane.topAnchor="250.0">
                    <columns>
                        <TableColumn prefWidth="0.0" text="ID" visible="false">
                            <cellValueFactory>
-                               <PropertyValueFactory property="id"/>
+                               <PropertyValueFactory property="id" />
                            </cellValueFactory>
                        </TableColumn>
                        <TableColumn prefWidth="150.0" text="Дата початку">
                            <cellValueFactory>
-                               <PropertyValueFactory property="dateBegin"/>
+                               <PropertyValueFactory property="dateBegin" />
                            </cellValueFactory>
                        </TableColumn>
                        <TableColumn prefWidth="150.0" text="Дата закінчення">
                            <cellValueFactory>
-                               <PropertyValueFactory property="dateEnd"/>
+                               <PropertyValueFactory property="dateEnd" />
                            </cellValueFactory>
                        </TableColumn>
                        <TableColumn prefWidth="100.0" text="Категорія">
                            <cellValueFactory>
-                               <PropertyValueFactory property="kateg"/>
+                               <PropertyValueFactory property="kateg" />
                            </cellValueFactory>
                        </TableColumn>
                        <TableColumn prefWidth="150.0" text="ТЗ">
                            <cellValueFactory>
-                               <PropertyValueFactory property="car"/>
+                               <PropertyValueFactory property="car" />
                            </cellValueFactory>
                        </TableColumn>
                        <TableColumn prefWidth="150.0" text="Спеціаліст">
                            <cellValueFactory>
-                               <PropertyValueFactory property="instr"/>
+                               <PropertyValueFactory property="instr" />
                            </cellValueFactory>
                        </TableColumn>
                        <TableColumn prefWidth="150.0" text="Номер довідки">
                            <cellValueFactory>
-                               <PropertyValueFactory property="numDov"/>
+                               <PropertyValueFactory property="numDov" />
                            </cellValueFactory>
                        </TableColumn>
                    </columns>
@@ -142,18 +139,18 @@
                            <items>
                                <MenuItem mnemonicParsing="false" onAction="#addDov" text="Додати">
                                    <graphic>
-                                       <FontAwesomeIconView glyphName="PLUS" size="24"/>
+                                       <FontAwesomeIconView glyphName="PLUS" size="24" />
                                    </graphic>
                                </MenuItem>
                                <MenuItem mnemonicParsing="false" text="Редагувати">
                                    <graphic>
-                                       <FontAwesomeIconView glyphName="EDIT" size="24"/>
+                                       <FontAwesomeIconView glyphName="EDIT" size="24" />
                                    </graphic>
                                </MenuItem>
-                               <SeparatorMenuItem mnemonicParsing="false"/>
+                               <SeparatorMenuItem mnemonicParsing="false" />
                                <MenuItem mnemonicParsing="false" onAction="#delRetraining" text="Видалити">
                                    <graphic>
-                                       <FontAwesomeIconView glyphName="MINUS" size="24"/>
+                                       <FontAwesomeIconView glyphName="MINUS" size="24" />
                                    </graphic>
                                </MenuItem>
                            </items>
@@ -163,48 +160,46 @@
                <VBox layoutX="510.0" layoutY="20.0" prefHeight="158.0" prefWidth="38.0" AnchorPane.topAnchor="20.0">
                    <FontAwesomeIconView glyphName="PLUS" onMouseClicked="#addStudent" size="48">
                        <cursor>
-                           <Cursor fx:constant="HAND"/>
+                           <Cursor fx:constant="HAND" />
                        </cursor>
                    </FontAwesomeIconView>
                    <FontAwesomeIconView glyphName="SAVE" onMouseClicked="#saveUser" size="48">
                        <cursor>
-                           <Cursor fx:constant="HAND"/>
+                           <Cursor fx:constant="HAND" />
                        </cursor>
                    </FontAwesomeIconView>
-                   <FontAwesomeIconView glyphName="EDIT" layoutX="10.0" layoutY="100.0" onMouseClicked="#editUser"
-                                        size="48">
+                   <FontAwesomeIconView glyphName="EDIT" layoutX="10.0" layoutY="100.0" onMouseClicked="#editUser" size="48">
                        <cursor>
-                           <Cursor fx:constant="HAND"/>
+                           <Cursor fx:constant="HAND" />
                        </cursor>
                    </FontAwesomeIconView>
-                   <FontAwesomeIconView glyphName="MINUS" onMouseClicked="#delUser" size="48"
-                                        wrappingWidth="42.71428680419922">
+                   <FontAwesomeIconView glyphName="MINUS" onMouseClicked="#delUser" size="48" wrappingWidth="42.71428680419922">
                        <cursor>
-                           <Cursor fx:constant="HAND"/>
+                           <Cursor fx:constant="HAND" />
                        </cursor>
                    </FontAwesomeIconView>
                </VBox>
-             <FontAwesomeIconView glyphName="DROPBOX" layoutX="74.0" layoutY="208.0" size="32">
+             <FontAwesomeIconView glyphName="DROPBOX" layoutX="74.0" layoutY="208.0" onMouseClicked="#getImageDropbox" size="32">
                  <cursor>
-                     <Cursor fx:constant="HAND"/>
+                     <Cursor fx:constant="HAND" />
                  </cursor>
              </FontAwesomeIconView>
                <StackPane layoutX="32.0" layoutY="511.0" prefHeight="150.0" prefWidth="443.0">
                    <FlowPane prefHeight="85.0" prefWidth="442.0" rowValignment="TOP">
                        <Label onMouseClicked="#kartkaAction" styleClass="label_print" text="Картка водія">
                            <font>
-                               <Font size="24.0"/>
+                               <Font size="24.0" />
                            </font>
                            <FlowPane.margin>
-                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </FlowPane.margin>
                        </Label>
                        <Label onMouseClicked="#dovAction" styleClass="label_print" text="Довідка">
                            <font>
-                               <Font size="24.0"/>
+                               <Font size="24.0" />
                            </font>
                            <FlowPane.margin>
-                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </FlowPane.margin>
                        </Label>
                    </FlowPane>

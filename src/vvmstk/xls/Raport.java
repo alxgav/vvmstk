@@ -2,6 +2,7 @@ package vvmstk.xls;
 
 import javafx.collections.ObservableList;
 import jxl.Workbook;
+import jxl.format.*;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
@@ -12,6 +13,7 @@ import jxl.write.*;
 import vvmstk.db.db.Group;
 import vvmstk.db.db.Student;
 import vvmstk.db.db.Thems;
+import vvmstk.view.retraining.data.R_data;
 
 
 import java.awt.*;
@@ -52,21 +54,15 @@ public class Raport {
             sheet.addCell(new Label(6, 9,student.getSurname(), cell1));
             sheet.addCell(new Label(6, 11,student.getFirstname(), cell1));
             sheet.addCell(new Label(6, 13,student.getMiddlename(), cell1));
-//            sheet.addCell(new Label(6, 15,rs.getString("PLACEBIRST"), cell1));
             sheet.addCell(new Label(6, 17,new SimpleDateFormat("dd.MM.yyyy").format(student.getDataB()), cell1));
-//            sheet.addCell(new Label(3, 19,rs.getString("SERPASP"), cell1));
             sheet.addCell(new Label(4, 19,student.getPasp(), cell1));
             sheet.addCell(new Label(1, 21,student.getPaspVyd(), cell1));
             sheet.addCell(new Label(1, 23,new SimpleDateFormat("dd.MM.yyyy").format(student.getPaspData()), cell1));
             sheet.addCell(new Label(1, 26,student.getAddress(), cell3));
             sheet.addCell(new Label(6, 30,student.getHosp(), cell1));
-//            sheet.addCell(new Label(3, 31,rs.getString("MED_SER"), cell1));
             sheet.addCell(new Label(4, 31,student.getMedNum(), cell1));
-//            sheet.addCell(new Label(21, 31,rs.getString("MED_TIME"), cell1));
             sheet.addCell(new Label(14, 31,new SimpleDateFormat("dd.MM.yyyy").format(student.getDataMed()), cell1));
-            // sheet.addCell(new Label(1, 33,rs.getString("edukation"), cell1));
             sheet.addCell(new Label(1, 37,student.getInn(), cell1));
-//            sheet.addCell(new Label(1, 39,rs.getString("tel_num"), cell1));
         sheet.addCell(new Label(22, 43,"''"+kateg+"''", cell1));
         new_wb.write();
         new_wb.close();
@@ -181,7 +177,41 @@ public class Raport {
         new_wb.close();
         wb.close();
         }
-
+/*
+make dovidka
+ */
+    public void make_dovidka(vvmstk.view.retraining.data.Student student, R_data r_data) throws IOException, BiffException, WriteException {
+        Workbook wb;
+        WritableWorkbook new_wb;
+        WritableSheet sheet;
+        WritableFont wf12 = new WritableFont(WritableFont.ARIAL,12);
+        wb = Workbook.getWorkbook(Raport.class.getResourceAsStream("/vvmstk/xls/raport/dovp.xls"));
+        new_wb = Workbook.createWorkbook(new File("out/tmp.xls"),wb);
+        sheet = new_wb.getSheet(0);
+        WritableSheet sheet2 = new_wb.getSheet(1);
+        WritableCellFormat cell = new WritableCellFormat(wf12);
+        WritableCellFormat cell2 = rs.cell(wf12,true,Alignment.CENTRE,VerticalAlignment.CENTRE,Border.ALL,BorderLineStyle.THIN);
+        cell2.setOrientation(Orientation.PLUS_90);
+        sheet.addCell(new Label(5, 7, student.getSurname()+" "+student.getFirstname()+" "+student.getMiddlename(), cell));
+        sheet.addCell(new Label(11, 1, r_data.getNumDov(), cell));
+        sheet.addCell(new Label(23, 9, "\""+r_data.getKateg()+"\"", cell));
+        sheet2.addCell(new Label(4, 0, r_data.getInstr(), cell));
+        sheet2.addCell(new Label(3, 1, r_data.getCar(), cell));
+        sheet2.addCell(new Label(8, 13, r_data.getInstr(), cell));
+        sheet2.addCell(new Label(0, 3, student.getSurname()+" "+student.getFirstname()+" "+student.getMiddlename(), cell));
+        sheet2.addCell(new Label(6, 15, student.getSurname()+" "+student.getFirstname().substring(0,1)+". "+student.getMiddlename().substring(0,1)+".", cell));
+        /*
+        fill datas
+         */
+        int col =1;
+        for(Object o: r_data.getDataStady()){
+            sheet2.addCell(new Label(col, 9,new SimpleDateFormat("dd.MM.yyyy").format(o), cell2));
+            col++;
+        }
+        new_wb.write();
+        new_wb.close();
+        wb.close();
+    }
 
 /*
 open file

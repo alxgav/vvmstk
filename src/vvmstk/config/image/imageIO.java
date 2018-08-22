@@ -7,6 +7,8 @@ import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
+import javafx.scene.image.ImageView;
+import org.bson.types.Binary;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -69,7 +71,16 @@ public class imageIO {
             result = client.files().listFolderContinue(result.getCursor());
 
         }
-
-
     }
+
+    public void getFoto(Binary foto, ImageView imageStudent) throws IOException {
+        if (foto!=null){
+            InputStream in = new ByteArrayInputStream(foto.getData());
+            BufferedImage bImageFromConvert = ImageIO.read(in);
+            ImageIO.write(bImageFromConvert, "png", new File("tmp_img/out.png"));
+            imageStudent.setImage(new javafx.scene.image.Image(new File("tmp_img/out.png").toURI().toString()));
+        }
+    }
+
+
 }
