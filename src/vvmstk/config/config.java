@@ -52,7 +52,7 @@ public class config {
     }
 
 
-   String getValue(String root, String key)  {
+   public String getValue(String root, String key)  {
         String value = null;
        try {
            JSONObject r = (JSONObject) connect().get(root);

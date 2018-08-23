@@ -204,6 +204,11 @@ public class retrainingController  implements Initializable {
         new Raport().openFILE("out/tmp.xls");
     }
 
+    private void printKartka() throws WriteException, IOException, BiffException {
+        new Raport().make_kartka(getSt());
+        new Raport().openFILE("out/tmp.xls");
+    }
+
     private Student getSt(){
         return new Student(studentTable.getSelectionModel().getSelectedItem().getSurname(),
                 studentTable.getSelectionModel().getSelectedItem().getFirstname(),
@@ -324,6 +329,7 @@ public class retrainingController  implements Initializable {
                 if (!dovText.getText().isEmpty()){
                     try {
                         System.out.println(r_data.getInstr());
+                        r_data.setNumDov(dovText.getText());
                         printDovidka(r_data);
 
                     } catch (WriteException e) {
@@ -349,7 +355,7 @@ public class retrainingController  implements Initializable {
 
 
         } else {
-            //printDovidka();
+            printDovidka(r_data);
         }
 
     }

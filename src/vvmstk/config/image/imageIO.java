@@ -9,6 +9,7 @@ import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
 import javafx.scene.image.ImageView;
 import org.bson.types.Binary;
+import vvmstk.config.config;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -49,7 +50,7 @@ public class imageIO {
     }
 
     public void getDropBox() throws DbxException, IOException{
-        final String ACCESS_TOKEN = "6Zs4zatuOqoAAAAAAAA-LaLChcGvU3gl-4qtN8BaDcvmIPdivG2wIGfbpo6DkcXn";
+        final String ACCESS_TOKEN = new config().getValue("ACCESS_TOKEN","ACCESS_TOKEN") ;
         DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
         DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
         FullAccount account = client.users().getCurrentAccount();

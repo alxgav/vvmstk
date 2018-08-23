@@ -233,4 +233,6 @@ open file
     }
 
 
+    public void make_kartka(vvmstk.view.retraining.data.Student st) {
+    }
 }
