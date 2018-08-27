@@ -51,6 +51,16 @@ public class R_data {
         this.dataStady = dataStady;
     }
 
+    public R_data(Date dateBegin, Date dateEnd, String kateg, String instr, String car, String numDov, ArrayList<LocalDate> dataStady) {
+        this.dateBegin = dateBegin;
+        this.dateEnd = dateEnd;
+        this.kateg = kateg;
+        this.instr = instr;
+        this.car = car;
+        this.numDov = numDov;
+        this.dataStady = dataStady;
+    }
+
     public Object getId() {
         return id;
     }

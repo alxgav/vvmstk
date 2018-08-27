@@ -38,8 +38,8 @@ public class config {
        return  t;
    }
 
-    public ArrayList<String> getCar(String Kateg) throws IOException, ParseException {
-        ArrayList<String> t = new ArrayList<>();
+    public ArrayList<Object> getCar(String Kateg) throws IOException, ParseException {
+        ArrayList<Object> t = new ArrayList<>();
         t.clear();
         JSONArray r = (JSONArray) connect().get("cars");
         for (int i =0; i<=r.size()-1; i++){
@@ -62,6 +62,8 @@ public class config {
        }
        return value;
    }
+
+
 
 
 

@@ -204,26 +204,28 @@ public class retrainingController  implements Initializable {
         new Raport().openFILE("out/tmp.xls");
     }
 
-    private void printKartka() throws WriteException, IOException, BiffException {
-        new Raport().make_kartka(getSt());
-        new Raport().openFILE("out/tmp.xls");
-    }
-
     private Student getSt(){
         return new Student(studentTable.getSelectionModel().getSelectedItem().getSurname(),
                 studentTable.getSelectionModel().getSelectedItem().getFirstname(),
-                studentTable.getSelectionModel().getSelectedItem().getMiddlename());
+                studentTable.getSelectionModel().getSelectedItem().getMiddlename(),
+                studentTable.getSelectionModel().getSelectedItem().getFoto());
 
 
 
     }
     private R_data getR_data(){
-        return new R_data(reatraingTable.getSelectionModel().getSelectedItem().getKateg(),
+        return new R_data(reatraingTable.getSelectionModel().getSelectedItem().getDateBegin(),
+                reatraingTable.getSelectionModel().getSelectedItem().getDateEnd(),
+                reatraingTable.getSelectionModel().getSelectedItem().getKateg(),
                 reatraingTable.getSelectionModel().getSelectedItem().getInstr(),
                 reatraingTable.getSelectionModel().getSelectedItem().getCar(),
                 reatraingTable.getSelectionModel().getSelectedItem().getNumDov(),
                 reatraingTable.getSelectionModel().getSelectedItem().getDataStady());
     }
+
+
+
+
 
 
 
@@ -278,7 +280,9 @@ public class retrainingController  implements Initializable {
     }
 
     @FXML
-    private void kartkaAction(MouseEvent mouseEvent) {
+    private void kartkaAction() throws WriteException, IOException, BiffException {
+        new Raport().make_kartka(getSt(), getR_data());
+        new Raport().openFILE("out/tmp.xls");
     }
 
     @FXML

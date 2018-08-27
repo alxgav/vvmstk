@@ -39,10 +39,11 @@ public class Student {
         this.foto = foto;
     }
 
-    public Student( String surname, String firstname, String middlename) {
+    public Student(String surname, String firstname, String middlename, Binary foto) {
         this.surname = surname;
         this.firstname = firstname;
         this.middlename = middlename;
+        this.foto = foto;
     }
 
     public Object getId() {

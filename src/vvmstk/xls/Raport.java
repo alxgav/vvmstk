@@ -10,6 +10,7 @@ import jxl.format.VerticalAlignment;
 import jxl.read.biff.BiffException;
 import jxl.write.Label;
 import jxl.write.*;
+import vvmstk.config.stringSetting;
 import vvmstk.db.db.Group;
 import vvmstk.db.db.Student;
 import vvmstk.db.db.Thems;
@@ -72,67 +73,29 @@ public class Raport {
     /*
      * индивидуальная карта
      */
-    public void make_ind_kart(Student student, Group group, ArrayList<Thems> themsList, String kateg) throws IOException, BiffException, WriteException{
+    public void make_ind_kart(Student student, Group group, String instruktor, String cars,  String kateg) throws IOException, BiffException, WriteException{
 
             WritableFont wf18_b = new WritableFont(WritableFont.ARIAL,18, WritableFont.BOLD);
             WritableFont wf12 = new WritableFont(WritableFont.ARIAL,12);
-            WritableFont wf12_b = new WritableFont(WritableFont.ARIAL,12, WritableFont.BOLD);
-            String s1 = "обліку навчання на тренажерах і водіння транспортних засобів категорії \""+ kateg + "\"";
 
             Workbook wb;
             WritableWorkbook new_wb;
 
-            wb = Workbook.getWorkbook(new File("raport/xls/r1.xls"));
+            wb = Workbook.getWorkbook(new File("raport/xls/kateg"+kateg+".xls"));
             new_wb = Workbook.createWorkbook(new File("out/tmp.xls"),wb);
             WritableSheet sheet = new_wb.getSheet(0);
 
             WritableCellFormat cell_surname = rs.cell(wf18_b,true,Alignment.LEFT,VerticalAlignment.TOP,Border.NONE,BorderLineStyle.NONE);
             WritableCellFormat cell_common = rs.cell(wf12,false,Alignment.LEFT,VerticalAlignment.CENTRE,Border.NONE,BorderLineStyle.NONE);
-            WritableCellFormat cell_thems = rs.cell(wf12,true,Alignment.LEFT,VerticalAlignment.TOP,Border.ALL,BorderLineStyle.THIN);
-            WritableCellFormat cell_kateg = rs.cell(wf12_b,true,Alignment.CENTRE,VerticalAlignment.CENTRE,Border.NONE,BorderLineStyle.NONE);
             sheet.addCell(new Label(8, 8,student.getSurname()+" "+student.getFirstname()+" "+student.getMiddlename(), cell_surname));
 
             WritableImage wi2 = new WritableImage(0, 8, 5, 9, student.getFoto().getData());
             sheet.addImage(wi2);
             sheet.addCell(new Label(11, 10,student.getGroup(), cell_common));
+            sheet.addCell(new Label(6, 14,instruktor, cell_common));
+            sheet.addCell(new Label(6, 16,cars, cell_common));
             sheet.addCell(new Label(12, 11,group.getDateBegin().toString(), cell_common));
             sheet.addCell(new Label(12, 12,group.getDateEnd().toString(), cell_common));
-            sheet.addCell(new Label(0, 6,s1, cell_kateg));
-            int row = 23;
-            double sum = 0;
-            for(Thems s: themsList){
-                sheet.mergeCells(4, row, 14, row);
-                sheet.mergeCells(2, row, 3, row);
-                sheet.mergeCells(15, row, 16, row);
-                sheet.mergeCells(0, row, 1, row);
-                sheet.mergeCells(17, row, 18, row);
-                sheet.mergeCells(19, row, 20, row);
-                sheet.mergeCells(21, row, 22, row);
-                sheet.mergeCells(23, row, 28, row);
-
-                sheet.addCell(new Label(0, row," ", cell_thems));
-                sheet.addCell(new Label(2, row,s.getNUM_TEMA().replace("\"",""), cell_thems));
-                sheet.addCell(new Label(4, row,s.getT_OPIS().replace("\"",""), cell_thems));
-                sheet.addCell(new Label(15, row,s.getT_TIME().replace("\"",""), cell_thems));
-                sheet.addCell(new Label(17, row," ", cell_thems));
-                sheet.addCell(new Label(19, row," ", cell_thems));
-                sheet.addCell(new Label(21, row," ", cell_thems));
-                sheet.addCell(new Label(23, row," ", cell_thems));
-                sum=sum+Double.valueOf(s.getT_TIME());
-                row++;
-            }
-            sheet.mergeCells(0, row, 14, row);
-            sheet.mergeCells(15, row, 16, row);
-            sheet.addCell(new Label(15, row,Double.toString(sum), cell_thems));
-            sheet.addCell(new Label(0, row,"ВСЬОГО", cell_thems));
-            sheet.mergeCells(17, row, 18, row);
-            sheet.mergeCells(19, row, 20, row);
-            sheet.mergeCells(21, row, 22, row);
-            sheet.mergeCells(23, row, 28, row);
-            sheet.addCell(new Label(17, row," ", cell_thems));
-            sheet.addCell(new Label(19, row," ", cell_thems));
-            sheet.addCell(new Label(21, row," ", cell_thems));
-            sheet.addCell(new Label(23, row," ", cell_thems));
             new_wb.write();
             new_wb.close();
             wb.close();
@@ -197,7 +160,7 @@ make dovidka
         sheet.addCell(new Label(23, 9, "\""+r_data.getKateg()+"\"", cell));
         sheet2.addCell(new Label(4, 0, r_data.getInstr(), cell));
         sheet2.addCell(new Label(3, 1, r_data.getCar(), cell));
-        sheet2.addCell(new Label(8, 13, r_data.getInstr(), cell));
+        sheet2.addCell(new Label(8, 13, new stringSetting().getSurnameInic(r_data.getInstr()), cell));
         sheet2.addCell(new Label(0, 3, student.getSurname()+" "+student.getFirstname()+" "+student.getMiddlename(), cell));
         sheet2.addCell(new Label(6, 15, student.getSurname()+" "+student.getFirstname().substring(0,1)+". "+student.getMiddlename().substring(0,1)+".", cell));
         /*
@@ -231,8 +194,42 @@ open file
         }
 
     }
+/*
+perepidgotovka
+ */
 
+    public void make_kartka(vvmstk.view.retraining.data.Student st, R_data r_data) throws IOException, BiffException, WriteException {
+        WritableFont wf18_b = new WritableFont(WritableFont.ARIAL,18, WritableFont.BOLD);
+        WritableFont wf12 = new WritableFont(WritableFont.ARIAL,12);
+        WritableFont wf12b = new WritableFont(WritableFont.ARIAL,12, WritableFont.BOLD);
 
-    public void make_kartka(vvmstk.view.retraining.data.Student st) {
+        Workbook wb;
+        WritableWorkbook new_wb;
+
+        wb = Workbook.getWorkbook(new File("raport/xls/perepidgotovka.xls"));
+        new_wb = Workbook.createWorkbook(new File("out/tmp.xls"),wb);
+        WritableSheet sheet = new_wb.getSheet(0);
+        WritableCellFormat cell2 = rs.cell(wf12,true,Alignment.CENTRE,VerticalAlignment.CENTRE,Border.ALL,BorderLineStyle.THIN);
+        WritableCellFormat cell_surname = rs.cell(wf18_b,true,Alignment.LEFT,VerticalAlignment.TOP,Border.NONE,BorderLineStyle.NONE);
+        WritableCellFormat cell_common = rs.cell(wf12,false,Alignment.LEFT,VerticalAlignment.CENTRE,Border.NONE,BorderLineStyle.NONE);
+        WritableCellFormat cell_center = rs.cell(wf12b,false,Alignment.CENTRE,VerticalAlignment.CENTRE,Border.NONE,BorderLineStyle.NONE);
+        sheet.addCell(new Label(8, 8,st.getSurname()+" "+st.getFirstname()+" "+st.getMiddlename(), cell_surname));
+
+        WritableImage wi2 = new WritableImage(0, 8, 5, 9, st.getFoto().getData());
+        sheet.addImage(wi2);
+        sheet.addCell(new Label(0, 6,"обліку навчання на тренажерах і водіння транспортних засобів категорії \""+r_data.getKateg()+"\"", cell_center));
+        sheet.addCell(new Label(6, 14,new stringSetting().getSurnameInic(r_data.getInstr()), cell_common));
+        sheet.addCell(new Label(6, 16,r_data.getCar(), cell_common));
+        sheet.addCell(new Label(12, 11,r_data.getDateBegin().toString(), cell_common));
+        sheet.addCell(new Label(12, 12,r_data.getDateEnd().toString(), cell_common));
+        int row = 24;
+        sheet.addCell(new Label(0, 23,new SimpleDateFormat("dd.MM.yyyy").format(r_data.getDataStady().get(0)), cell2));
+        for (Object o:r_data.getDataStady()){
+            sheet.addCell(new Label(0, row,new SimpleDateFormat("dd.MM.yyyy").format(o), cell2));
+            row++;
+        }
+        new_wb.write();
+        new_wb.close();
+        wb.close();
     }
 }

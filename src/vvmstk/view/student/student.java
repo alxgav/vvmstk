@@ -21,7 +21,9 @@ import jxl.read.biff.BiffException;
 import jxl.write.WriteException;
 import org.bson.Document;
 import org.bson.types.Binary;
+import vvmstk.config.config;
 import vvmstk.config.image.imageIO;
+import vvmstk.config.stringSetting;
 import vvmstk.db.db.*;
 import vvmstk.db.dbo;
 import vvmstk.xls.Raport;
@@ -228,17 +230,17 @@ public class student implements Initializable {
 
     }
 
-    private ArrayList<Thems> setThems(String kategorja){
-        MongoCursor<Document> cursor = database.getCollection("carthems").find(eq("\"KATEGORIJA\"",kategorja)).iterator();
-        ArrayList<Thems> l = new ArrayList<>();
-        l.clear();
-        while (cursor.hasNext()){
-            Document doc = cursor.next();
-            Thems thems = new Thems(doc.getString("\"NUM_TEMA\""), doc.getString("\"T_TIME\""), doc.getString("\"T_OPIS\""));
-            l.add(thems);
-        }
-        return l;
-    }
+//    private ArrayList<Thems> setThems(String kategorja){
+//        MongoCursor<Document> cursor = database.getCollection("carthems").find(eq("\"KATEGORIJA\"",kategorja)).iterator();
+//        ArrayList<Thems> l = new ArrayList<>();
+//        l.clear();
+//        while (cursor.hasNext()){
+//            Document doc = cursor.next();
+//            Thems thems = new Thems(doc.getString("\"NUM_TEMA\""), doc.getString("\"T_TIME\""), doc.getString("\"T_OPIS\""));
+//            l.add(thems);
+//        }
+//        return l;
+//    }
 
     private void setGroups(){
         List<String> l = new ArrayList<>();
@@ -277,10 +279,21 @@ public class student implements Initializable {
     }
 
     @FXML
-    private void driveAction() throws WriteException, IOException, BiffException {
+    private void driveAction() throws WriteException, IOException, BiffException, org.json.simple.parser.ParseException {
 
-
-        raport.make_ind_kart(getSt(), setGroup(), setThems(kategLabel.getText()), kategLabel.getText());
+        ArrayList<Object> inst = new config().getTeacher("Водіння ТЗ");
+        ArrayList<Object> car = new config().getCar(kategLabel.getText());
+        System.out.println(kategLabel.getText());
+        System.out.println(car.size());
+        String instruktor = "";
+        String cars = "";
+        for (Object o: inst){
+            instruktor = instruktor +", "+ new stringSetting().getSurnameInic(o.toString());
+        }
+        for (Object o: car){
+            cars = cars +", "+ o;
+        }
+        raport.make_ind_kart(getSt(), setGroup(), instruktor.substring(1), cars.substring(1), kategLabel.getText());
         raport.openFILE("out/tmp.xls");
     }
 

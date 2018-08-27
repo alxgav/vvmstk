@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="vvmstk.view.account.Account"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<VBox prefHeight="239.0" prefWidth="417.0" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vvmstk.view.account.Account">
+   <children>
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+        <items>
+          <Button mnemonicParsing="false">
+               <graphic>
+                  <MaterialDesignIconView glyphName="ACCOUNT_MULTIPLE" size="24" />
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Додати працівників" />
+               </tooltip></Button>
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false">
+               <graphic>
+                  <MaterialDesignIconView glyphName="CONTENT_SAVE" size="24" />
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Зберігти" />
+               </tooltip>
+            </Button>
+            <Button layoutX="127.0" layoutY="10.0" mnemonicParsing="false">
+               <graphic>
+                  <MaterialDesignIconView glyphName="DELETE" size="24" />
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Видалити" />
+               </tooltip>
+            </Button>
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
+            <Button layoutX="182.0" layoutY="10.0" mnemonicParsing="false">
+               <graphic>
+                  <MaterialDesignIconView glyphName="PRINTER" size="24" />
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Роздрукувати" />
+               </tooltip>
+            </Button>
+            <Button layoutX="244.0" layoutY="10.0" mnemonicParsing="false">
+               <graphic>
+                  <MaterialDesignIconView glyphName="FILE_SEND" size="24" />
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Відправити до банку" />
+               </tooltip>
+            </Button>
+        </items>
+      </ToolBar>
+      <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+        <columns>
+          <TableColumn prefWidth="200.0" text="ПІБ" />
+          <TableColumn prefWidth="100.0" text="ІПН" />
+            <TableColumn prefWidth="100.0" text="РАХУНОК" />
+            <TableColumn prefWidth="100.0" text="СУММА" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>

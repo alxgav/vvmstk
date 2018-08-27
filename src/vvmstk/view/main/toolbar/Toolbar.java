@@ -38,7 +38,8 @@ public class Toolbar implements Initializable {
     }
 
     @FXML
-    private void loadAccounting() {
+    private void loadAccounting() throws IOException {
+        Main.setNode(FXMLLoader.load(getClass().getResource("/vvmstk/view/account/Account.fxml")));
     }
 
     @FXML
