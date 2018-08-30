@@ -1,4 +1,4 @@
-package vvmstk.xls;
+package vvmstk.raport.xls;
 
 import jxl.Sheet;
 import jxl.Workbook;

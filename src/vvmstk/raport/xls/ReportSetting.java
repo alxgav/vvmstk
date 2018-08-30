@@ -1,4 +1,4 @@
-package vvmstk.xls;
+package vvmstk.raport.xls;
 
 import jxl.format.Alignment;
 import jxl.format.Border;
@@ -11,11 +11,6 @@ import jxl.write.WriteException;
 
 public class ReportSetting {
 
-//    final public WritableFont wf12_i_b = new WritableFont(WritableFont.ARIAL,12, WritableFont.BOLD,true);
-//    final public WritableFont wf18_b = new WritableFont(WritableFont.ARIAL,18, WritableFont.BOLD);
-//    final public WritableFont wf16_b = new WritableFont(WritableFont.ARIAL,16, WritableFont.BOLD);
-//    final public WritableFont wf11 = new WritableFont(WritableFont.ARIAL,11);
-//    final public WritableFont wf12 = new WritableFont(WritableFont.ARIAL,12);
 
     public ReportSetting() {
 

@@ -212,4 +212,9 @@
 .list-view .scroll-bar  {
     -fx-background-color: -fx-primary;
 }
-/*dialog style*/
+.close_btn:hover{
+    -fx-fill: #FF0000;
+    -fx-scale-x: 1.4;
+    -fx-scale-y: 1.4;
+    -fx-scale-z: 1.4;
+}

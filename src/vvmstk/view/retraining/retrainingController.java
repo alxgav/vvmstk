@@ -20,7 +20,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -36,7 +35,7 @@ import vvmstk.config.image.imageIO;
 import vvmstk.db.dbo;
 import vvmstk.view.retraining.data.R_data;
 import vvmstk.view.retraining.data.Student;
-import vvmstk.xls.Raport;
+import vvmstk.raport.xls.Raport;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -141,12 +140,14 @@ public class retrainingController  implements Initializable {
                     doc.getDate("dataB"),
                     doc.get("foto",org.bson.types.Binary.class));
             l.add(student);
+            System.out.println(student);
         }
         if (!studentList.isEmpty()){
             studentList.clear();
         }
         studentList.addAll(l);
         studentTable.setItems(studentList);
+
     }
 
     private void getRetrainingById(Object id){
@@ -223,12 +224,6 @@ public class retrainingController  implements Initializable {
                 reatraingTable.getSelectionModel().getSelectedItem().getDataStady());
     }
 
-
-
-
-
-
-
     @FXML
     private void addStudent() {
         studentStatus(false);
@@ -238,13 +233,18 @@ public class retrainingController  implements Initializable {
     }
 
     @FXML
-    private void saveUser() {
+    private void saveUser() throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BufferedImage originalImage = ImageIO.read(new File("tmp_img/out.jpg"));
+        ImageIO.write(originalImage, "jpg", baos);
+        baos.flush();
+
         Student student = new Student(surname.getText(),firstname.getText(),middlename.getText(),new Date(),null);
         Document doc = new Document("surname", student.getSurname())
                 .append("firstname", student.getFirstname())
                 .append("middlename", student.getMiddlename())
                 .append("dataB",student.getDataB())
-                .append("foto", student.getFoto());
+                .append("foto", baos.toByteArray());
         database.insertData(database.getCollection("restudent"), doc);
         getStudent();
     }
@@ -375,6 +375,6 @@ public class retrainingController  implements Initializable {
         File f = new File("tmp_img/out.jpg");
         img.scale(fotoFile, 168, 209, f);
         imageStudent.setImage(new Image(f.toURI().toString()));
-        setFoto(id);
+       // setFoto(id);
     }
 }

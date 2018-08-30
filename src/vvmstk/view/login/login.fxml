@@ -34,7 +34,7 @@
           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
         </opaqueInsets>
     </JFXButton>
-   <FontAwesomeIconView glyphName="CLOSE" layoutX="364.0" layoutY="28.0" onMouseClicked="#exitAction" size="20">
+   <FontAwesomeIconView glyphName="CLOSE" layoutX="364.0" layoutY="28.0" onMouseClicked="#exitAction" size="20" styleClass="close_btn">
       <cursor>
          <Cursor fx:constant="HAND" />
       </cursor>

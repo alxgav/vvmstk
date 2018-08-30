@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -29,18 +30,18 @@ public class LoginController  implements Initializable {
     }
 
     @FXML
-    private void loginBtnAction(ActionEvent actionEvent) throws IOException {
+    private void loginBtnAction() throws IOException {
         ((Stage) loginText.getScene().getWindow()).close();
         loadStage();
     }
 
     @FXML
-    private void canselBtnAction(ActionEvent actionEvent) {
+    private void canselBtnAction() {
         System.exit(0);
     }
 
     @FXML
-    private void exitAction(MouseEvent mouseEvent) {
+    private void exitAction() {
         System.exit(0);
     }
 
@@ -48,7 +49,9 @@ public class LoginController  implements Initializable {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Parent parent = FXMLLoader.load(getClass().getResource("/vvmstk/view/main/main.fxml"));
         Stage stage = new Stage(StageStyle.UNDECORATED);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/vvmstk/img/gerb_tsou.png")));
         stage.setTitle("");
+
 
         stage.setScene(new Scene(parent, screenSize.getWidth() - 50, screenSize.getHeight() - 50));
         stage.show();

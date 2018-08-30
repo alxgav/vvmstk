@@ -1,4 +1,4 @@
-package vvmstk.xls;
+package vvmstk.raport.xls;
 
 import javafx.collections.ObservableList;
 import jxl.Workbook;
@@ -13,7 +13,6 @@ import jxl.write.*;
 import vvmstk.config.stringSetting;
 import vvmstk.db.db.Group;
 import vvmstk.db.db.Student;
-import vvmstk.db.db.Thems;
 import vvmstk.view.retraining.data.R_data;
 
 
@@ -21,7 +20,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Raport {
@@ -148,7 +146,7 @@ make dovidka
         WritableWorkbook new_wb;
         WritableSheet sheet;
         WritableFont wf12 = new WritableFont(WritableFont.ARIAL,12);
-        wb = Workbook.getWorkbook(Raport.class.getResourceAsStream("/vvmstk/xls/raport/dovp.xls"));
+        wb = Workbook.getWorkbook(Raport.class.getResourceAsStream("/vvmstk/raport/xls/raport/dovp.xls"));
         new_wb = Workbook.createWorkbook(new File("out/tmp.xls"),wb);
         sheet = new_wb.getSheet(0);
         WritableSheet sheet2 = new_wb.getSheet(1);
