@@ -65,11 +65,21 @@
                <FontAwesomeIconView fill="#f20303" glyphName="ARROW_CIRCLE_DOWN" size="24" />
             </graphic>
          </JFXButton>
+         <JFXButton layoutX="291.0" layoutY="20.0" onAction="#graphBtnAction">
+            <graphic>
+               <FontAwesomeIconView fill="#f20303" glyphName="ARROW" size="24" />
+            </graphic>
+         </JFXButton>
+         <JFXButton layoutX="301.0" layoutY="30.0" onAction="#driveBtnAction">
+            <graphic>
+               <FontAwesomeIconView fill="#f20303" glyphName="CAR" size="24" />
+            </graphic>
+         </JFXButton>
        </ToolBar>
    </top>
    <center>
        <SplitPane dividerPositions="0.3416" prefHeight="160.0" prefWidth="200.0" style="-fx-background-color: #24282f;" BorderPane.alignment="CENTER">
-           <StackPane>
+           <StackPane fx:id="surnamePane">
                <TableView fx:id="studentTable" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #24282f;">
                    <columns>
                        <TableColumn prefWidth="75.0" text="id" visible="false">

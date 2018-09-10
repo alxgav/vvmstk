@@ -20,6 +20,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Raport {
@@ -225,6 +228,36 @@ perepidgotovka
         for (Object o:r_data.getDataStady()){
             sheet.addCell(new Label(0, row,new SimpleDateFormat("dd.MM.yyyy").format(o), cell2));
             row++;
+        }
+        new_wb.write();
+        new_wb.close();
+        wb.close();
+    }
+
+    /*
+    make plane
+     */
+    public void make_plan(ArrayList<LocalDate> days) throws IOException, BiffException, WriteException {
+        Workbook wb;
+        WritableWorkbook new_wb;
+        WritableSheet sheet;
+        WritableFont wf12 = new WritableFont(WritableFont.ARIAL,12);
+        wb = Workbook.getWorkbook(new File("raport/xls/plane_B.xls"));
+        new_wb = Workbook.createWorkbook(new File("out/tmp.xls"),wb);
+        sheet = new_wb.getSheet(0);
+        WritableCellFormat cell = new WritableCellFormat(wf12);
+        WritableCellFormat cell2 = rs.cell(wf12,true,Alignment.CENTRE,VerticalAlignment.CENTRE,Border.ALL,BorderLineStyle.THIN);
+        cell2.setOrientation(Orientation.PLUS_90);
+//        sheet.addCell(new Label(5, 7, student.getSurname()+" "+student.getFirstname()+" "+student.getMiddlename(), cell));
+//        sheet.addCell(new Label(11, 1, r_data.getNumDov(), cell));
+//        sheet.addCell(new Label(23, 9, "\""+r_data.getKateg()+"\"", cell));
+        /*
+        fill datas
+         */
+        int col =5;
+        for(LocalDate o: days){
+            sheet.addCell(new Label(col++, 17,o.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")), cell2));
+            //col++;
         }
         new_wb.write();
         new_wb.close();

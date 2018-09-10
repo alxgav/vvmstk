@@ -11,13 +11,23 @@ public class Group  {
     private Date dateBegin;
     private Date dateEnd;
     private Integer price;
+    private Integer termin;
 
-    public Group(String groupNum, String kateg, Date dateBegin, Date dateEnd, Integer price) {
+    public Group(String groupNum, String kateg, Date dateBegin, Date dateEnd, Integer price, Integer termin) {
         this.groupNum = groupNum;
         this.kateg = kateg;
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
         this.price = price;
+        this.termin = termin;
+    }
+
+    public Integer getTermin() {
+        return termin;
+    }
+
+    public void setTermin(Integer termin) {
+        this.termin = termin;
     }
 
     public String getGroupNum() {

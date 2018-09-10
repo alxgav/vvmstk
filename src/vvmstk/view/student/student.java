@@ -1,33 +1,50 @@
 package vvmstk.view.student;
 
 import com.dropbox.core.DbxException;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import com.mongodb.client.MongoCursor;
+import fr.opensagres.xdocreport.core.XDocReportException;
+import fr.opensagres.xdocreport.document.IXDocReport;
+import fr.opensagres.xdocreport.template.IContext;
+import fr.opensagres.xdocreport.template.formatter.FieldsMetadata;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jxl.read.biff.BiffException;
 import jxl.write.WriteException;
 import org.bson.Document;
 import vvmstk.config.config;
+import vvmstk.config.dateCalc;
 import vvmstk.config.image.imageIO;
 import vvmstk.config.stringSetting;
-import vvmstk.db.db.*;
+import vvmstk.db.db.Group;
+import vvmstk.db.db.Student;
 import vvmstk.db.dbo;
+import vvmstk.raport.odt.kontrakt;
+import vvmstk.raport.odt.odtx_report;
 import vvmstk.raport.xls.Raport;
 import vvmstk.raport.xls.importData;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.text.Format;
 import java.text.ParseException;
@@ -38,7 +55,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static com.mongodb.client.model.Filters.eq;
-import static javafx.collections.FXCollections.*;
+import static javafx.collections.FXCollections.observableArrayList;
 
 public class student implements Initializable {
     private dbo database = new dbo();
@@ -85,6 +102,9 @@ public class student implements Initializable {
     private Label dataELabel;
     @FXML
     private ImageView imageStudent;
+    @FXML
+    private StackPane surnamePane;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setGroups();
@@ -219,24 +239,14 @@ public class student implements Initializable {
                     doc.getString("kateg"),
                     doc.getDate("dateB"),
                     doc.getDate("dateE"),
-                    doc.getInteger("price"));
+                    doc.getInteger("price"),
+                    doc.getInteger("termin"));
 
         }
         return group;
 
     }
 
-//    private ArrayList<Thems> setThems(String kategorja){
-//        MongoCursor<Document> cursor = database.getCollection("carthems").find(eq("\"KATEGORIJA\"",kategorja)).iterator();
-//        ArrayList<Thems> l = new ArrayList<>();
-//        l.clear();
-//        while (cursor.hasNext()){
-//            Document doc = cursor.next();
-//            Thems thems = new Thems(doc.getString("\"NUM_TEMA\""), doc.getString("\"T_TIME\""), doc.getString("\"T_OPIS\""));
-//            l.add(thems);
-//        }
-//        return l;
-//    }
 
     private void setGroups(){
         List<String> l = new ArrayList<>();
@@ -247,6 +257,8 @@ public class student implements Initializable {
         groups.setItems(observableArrayList(l));
 
     }
+
+
 
     @FXML // import data from excel
     private void importBtnAction() throws ParseException, IOException, BiffException {
@@ -269,9 +281,52 @@ public class student implements Initializable {
         database.updateDataID(database.getCollection("student"),id,new Document("foto",baos.toByteArray()));
     }
 
+    private  void openODT() throws IOException, InterruptedException {
+        if(Desktop.isDesktopSupported()){
+            new Thread(()->{
+                try {
+                    Desktop.getDesktop().open(new File("template.odt"));
+                } catch (IOException e) {
+                    System.out.println(e.toString());
+                }
+            }).start();
+
+
+        }
+
+    }
+
 
     @FXML
-    private void contractAction() {
+    private void contractAction() throws IOException, InterruptedException, XDocReportException {
+        String surname = surnameField.getText()+" "+firstnameField.getText()+" "+middlenameField.getText();
+        String passport = paspField.getText()+" "+paspVydField.getText()+" "+paspDataField.getValue().toString();
+        odtx_report odtx = new odtx_report();
+        IXDocReport report ;
+        report = odtx.loadODT("kontrakt");
+        FieldsMetadata fieldsMetadata = report.createFieldsMetadata();
+
+        fieldsMetadata.load("kontrakt", kontrakt.class, true);
+        List<kontrakt> content = new ArrayList<>();
+        IContext context = report.createContext();
+        Group gr = setGroup();
+        content.add(new kontrakt(dataBLabel.getText(),
+                surname,
+                kategLabel.getText(),
+                gr.getTermin().toString(),
+                gr.getPrice().toString(),
+                passport,
+                addressField.getText()));
+        context.put("DATA1",dataBLabel.getText());
+        context.put("KATEGORIJA",kategLabel.getText() );
+        context.put("SURNAME",surname);
+        context.put("TERMIN",gr.getTermin().toString());
+        context.put("VARTIST",gr.getPrice().toString());
+        context.put("SURNAME2",new stringSetting().getSurnameInic(surname));
+        context.put("kontrakt",content);
+        OutputStream out = odtx.outODT();
+        report.process(context,out);
+        openODT();
     }
 
     @FXML
@@ -354,5 +409,99 @@ public class student implements Initializable {
         img.scale(fotoFile, 168, 209, f);
         imageStudent.setImage(new Image(f.toURI().toString()));
         setFoto(studentTable.getSelectionModel().getSelectedItems().get(0).getId());
+    }
+
+    @FXML
+    private void graphBtnAction() throws IOException {
+        JFXDatePicker startDay = new JFXDatePicker();
+        JFXCheckBox d1 = new JFXCheckBox("понеділок");
+        JFXCheckBox d2 = new JFXCheckBox("вівторок");
+        JFXCheckBox d3 = new JFXCheckBox("середа");
+        JFXCheckBox d4 = new JFXCheckBox("четвер");
+        JFXCheckBox d5 = new JFXCheckBox("п'ятниця");
+        startDay.setPrefSize(150, 50);
+        startDay.setPadding(new Insets(10, 5, 10, 5));
+        startDay.setStyle("-fx-font-size:13px; -fx-font-weight:bold;-fx-text-fill:#2A2E37");
+
+        VBox vb = new VBox();
+        vb.setSpacing(8);
+
+        vb.getChildren().addAll(startDay,d1,d2,d3,d4,d5);
+
+        // Heading text
+        Text t = new Text("РОЗДРУКУВАТИ ПЛАН ЗАНЯТЬ");
+        t.setStyle("-fx-font-size:14px;");
+
+        JFXDialogLayout dialogLayout = new JFXDialogLayout();
+        dialogLayout.setHeading(t);
+        dialogLayout.setPrefSize(300,50);
+
+        dialogLayout.setBody(vb);
+
+        JFXDialog dialog = new JFXDialog(surnamePane, dialogLayout, JFXDialog.DialogTransition.CENTER);
+        // close button
+        JFXButton closeButton = new JFXButton("Відмінити");
+        closeButton.setStyle("-fx-button-type: RAISED;-fx-background-color: rgb(36,42,43);-fx-font-size: 14px;-fx-text-fill: WHITE;");
+        //Add button
+        JFXButton addBtn = new JFXButton("Додати");
+        addBtn.setStyle("-fx-button-type: RAISED;-fx-background-color: rgb(36,42,43);-fx-font-size: 14px;-fx-text-fill: WHITE;"
+                + "");
+        closeButton.setOnAction((ActionEvent event1) -> {
+            dialog.close();
+        });
+        addBtn.setOnAction((ActionEvent event1) -> {
+                ArrayList<Integer> days = new ArrayList<>();
+                if (d1.isSelected()){
+                    days.add(1);
+                }
+                if (d2.isSelected()){
+                    days.add(2);
+                }
+                if (d3.isSelected()){
+                    days.add(3);
+                }
+                if (d4.isSelected()){
+                    days.add(4);
+                }
+                if (d5.isSelected()){
+                    days.add(5);
+                }
+
+            try {
+
+
+                new Raport().make_plan(new dateCalc().listDaysOfPlane_B(startDay.getValue(),38,days));
+                raport.openFILE("out/tmp.xls");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (org.json.simple.parser.ParseException e) {
+                e.printStackTrace();
+            } catch (WriteException e) {
+                e.printStackTrace();
+            } catch (BiffException e) {
+                e.printStackTrace();
+            }
+
+
+            dialog.close();
+        });
+        HBox box=new HBox();
+        box.setSpacing(10);
+        box.setPrefSize(200, 50);
+        box.setAlignment(Pos.CENTER_RIGHT);
+        box.getChildren().addAll(addBtn,closeButton);
+
+        dialogLayout.setActions(box);
+
+        dialog.show();
+
+    }
+
+    @FXML
+    private void driveBtnAction() throws IOException, BiffException {
+//        Document doc = new Document().append("data","07.08.2018").append("tema","1").append("tema_t","2");
+//        database.getCollection("student").updateOne(eq("_id",studentTable.getSelectionModel().getSelectedItem().getId()), Updates.addToSet("garphic",doc));
+
+
     }
 }

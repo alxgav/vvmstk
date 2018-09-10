@@ -20,6 +20,11 @@
           <FontAwesomeIconView glyphName="DOLLAR" size="25" />
         </graphic>
     </JFXButton>
+   <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="232.0" onAction="#loadAccounting" prefHeight="400.0" prefWidth="330.0" styleClass="toolbar-button" text="МО" textAlignment="CENTER">
+      <graphic>
+         <FontAwesomeIconView glyphName="DOLLAR" size="25" />
+      </graphic>
+   </JFXButton>
     <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="62.0" onAction="#loadSetting" prefHeight="400.0" prefWidth="330.0" styleClass="toolbar-button" text="Налаштування" textAlignment="CENTER">
         <graphic>
           <FontAwesomeIconView glyphName="COG" size="25" />

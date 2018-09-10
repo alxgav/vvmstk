@@ -1,8 +1,10 @@
 package vvmstk.raport.xls;
 
+import jxl.DateCell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+import org.apache.poi.ss.usermodel.*;
 import org.bson.Document;
 import vvmstk.db.db.Student;
 import vvmstk.db.dbo;
@@ -11,18 +13,20 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class importData {
 
-    private dbo database = new dbo();
+    final static String GRAPHIC = "in/g.xls";
+
+
 
     public importData() {
     }
 
     public void setImport(String group) throws IOException, BiffException, ParseException {
-        ArrayList data = new ArrayList();
+        dbo database = new dbo();
         File f = new File("xls");
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         if(f.isDirectory()){
@@ -56,9 +60,6 @@ public class importData {
                         append("mednum", student.getMedNum()).
                         append("hosp", student.getHosp()).
                         append("meddate", student.getDataMed());
-
-//                MongoCollection<Document> collection = database.getCollection("student");
-//                collection.insertOne(doc);
                 database.insertData(database.getCollection("student"),doc);
                 workbook.close();
 
@@ -67,4 +68,111 @@ public class importData {
     }
 
 
+    public void setGraphic() throws IOException, BiffException {
+        String student ="";
+        String data="";
+        String tema="";
+        String tema_time;
+        String t1="";
+        String t2="";
+
+        String[] time = {"одна", "дві", " ", "00", "30"};
+
+        Workbook workbook = Workbook.getWorkbook(new File(GRAPHIC));
+        for(int i=0;i<=workbook.getNumberOfSheets()-1;i++){
+            int colStudent=0;
+            Sheet sheet = workbook.getSheet(i);
+            System.out.println("==========SART==========="+sheet.getName()+"========================"+sheet.getColumns());
+            for(int st=5;st<=sheet.getRows()-1;st++){
+                if(!sheet.getCell(1,st).getContents().equals("")&&sheet.getCell(1,st).getContents().length()>4){
+                    colStudent++;
+
+                }
+            }
+            System.out.println("count of student "+colStudent);
+            for(int row=1;row<=colStudent;row++){ // количество студентов
+                student = sheet.getCell(1,row+5).getContents();
+                int r = 6;
+                for(int col=5;col<=sheet.getColumns()-1;col++){ // количество колонок
+                    DateCell dc = (DateCell) sheet.getCell(col, 5);
+                    data = new SimpleDateFormat("dd.MM.yyyy").format(dc.getDate()) ;
+                    tema = sheet.getCell(col, r).getContents();
+                    String [] t = tema.split("/");
+                    if(!"".equals(tema)){
+                        tema_time=t[1];
+                        tema=t[0];
+
+                        if("1".equals(tema_time)){
+                            t1= time[0];
+                            t2 = time[3];
+                        }
+                        if("2".equals(tema_time)){
+                            t1= time[1];
+                            t2 = time[3];
+                        }
+                        if("0.5".equals(tema_time)){
+                            t1= time[2];
+                            t2 = time[4];
+                        }
+                        System.out.println(student+": "+data+" :"+tema+": "+tema_time+" :"+t1+" :"+t2);
+
+                    }
+                }
+                r++;
+            }
+            System.out.println("==========END==========="+sheet.getName()+"========================");
+        }
+        workbook.close();
+    }
+
+
+
+    public static void main(String[] arg) throws IOException, BiffException {
+        DataFormatter dataFormatter = new DataFormatter();
+        org.apache.poi.ss.usermodel.Workbook workbook = WorkbookFactory.create(new File(GRAPHIC));
+
+        workbook.forEach(sheet ->{
+            AtomicInteger coutOfStudent = new AtomicInteger();
+            /*
+            finde count of student
+             */
+            System.out.println("sheet name====START========="+sheet.getSheetName()+"=============== ");
+ //           sheet.forEach(row ->{
+//                String student="";
+//                String data = "";
+//                if(row.getRowNum()>4){
+//                    for(int i=5;i<=row.getLastCellNum()-1;i++){
+//                        data = dataFormatter.formatCellValue(row.getCell(i));
+//                        if(!dataFormatter.formatCellValue(row.getCell(1)).equals("") && !row.getCell(1).getCellType().equals(CellType.FORMULA) && dataFormatter.formatCellValue(row.getCell(1)).length()>3){
+//                            coutOfStudent.getAndIncrement();
+//                            student = dataFormatter.formatCellValue(row.getCell(1));
+//
+//                        }
+//                        System.out.println(student+" "+data);
+//                    }
+//                }
+//            });
+
+            sheet.forEach(row -> {
+                if(row.getRowNum()>4){
+                    row.forEach(cell -> {
+
+                        if(cell.getCellType()!=CellType.FORMULA){
+                            String cellValue = dataFormatter.formatCellValue(cell);
+                            System.out.print(cellValue + "\t");
+                        }
+                    });
+                    System.out.println();
+                }
+
+            });
+
+            System.out.println("sheet name====END========="+sheet.getSheetName()+"=============== count "+coutOfStudent.get());
+        });
+        workbook.close();
+    }
+
+
 }
+
+
