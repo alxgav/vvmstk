@@ -223,6 +223,11 @@
                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                        </FlowPane.margin>
                    </Label>
+               <Label layoutX="541.0" layoutY="30.0" onMouseClicked="#vidomistAction" styleClass="label_print" text="ВІДОМІСТЬ">
+                  <font>
+                     <Font size="24.0" />
+                  </font>
+               </Label>
                </FlowPane>
            </VBox>
        </SplitPane>

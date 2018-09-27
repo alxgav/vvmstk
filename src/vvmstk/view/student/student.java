@@ -281,7 +281,7 @@ public class student implements Initializable {
         database.updateDataID(database.getCollection("student"),id,new Document("foto",baos.toByteArray()));
     }
 
-    private  void openODT() throws IOException, InterruptedException {
+    private  void openODT()  {
         if(Desktop.isDesktopSupported()){
             new Thread(()->{
                 try {
@@ -298,7 +298,7 @@ public class student implements Initializable {
 
 
     @FXML
-    private void contractAction() throws IOException, InterruptedException, XDocReportException {
+    private void contractAction() throws IOException, XDocReportException {
         String surname = surnameField.getText()+" "+firstnameField.getText()+" "+middlenameField.getText();
         String passport = paspField.getText()+" "+paspVydField.getText()+" "+paspDataField.getValue().toString();
         odtx_report odtx = new odtx_report();
@@ -412,7 +412,7 @@ public class student implements Initializable {
     }
 
     @FXML
-    private void graphBtnAction() throws IOException {
+    private void graphBtnAction() {
         JFXDatePicker startDay = new JFXDatePicker();
         JFXCheckBox d1 = new JFXCheckBox("понеділок");
         JFXCheckBox d2 = new JFXCheckBox("вівторок");
@@ -446,9 +446,7 @@ public class student implements Initializable {
         JFXButton addBtn = new JFXButton("Додати");
         addBtn.setStyle("-fx-button-type: RAISED;-fx-background-color: rgb(36,42,43);-fx-font-size: 14px;-fx-text-fill: WHITE;"
                 + "");
-        closeButton.setOnAction((ActionEvent event1) -> {
-            dialog.close();
-        });
+        closeButton.setOnAction((ActionEvent event1) -> dialog.close());
         addBtn.setOnAction((ActionEvent event1) -> {
                 ArrayList<Integer> days = new ArrayList<>();
                 if (d1.isSelected()){
@@ -472,13 +470,7 @@ public class student implements Initializable {
 
                 new Raport().make_plan(new dateCalc().listDaysOfPlane_B(startDay.getValue(),38,days));
                 raport.openFILE("out/tmp.xls");
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (org.json.simple.parser.ParseException e) {
-                e.printStackTrace();
-            } catch (WriteException e) {
-                e.printStackTrace();
-            } catch (BiffException e) {
+            } catch (IOException | WriteException | BiffException | org.json.simple.parser.ParseException e) {
                 e.printStackTrace();
             }
 
@@ -503,5 +495,11 @@ public class student implements Initializable {
 //        database.getCollection("student").updateOne(eq("_id",studentTable.getSelectionModel().getSelectedItem().getId()), Updates.addToSet("garphic",doc));
 
 
+    }
+
+    @FXML
+    private void vidomistAction() throws WriteException, IOException, BiffException {
+        raport.make_vedomost(studentList);
+        raport.openFILE("out/tmp.xls");
     }
 }

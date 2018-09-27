@@ -85,10 +85,10 @@ public class Raport {
             wb = Workbook.getWorkbook(new File("raport/xls/kateg"+kateg+".xls"));
             new_wb = Workbook.createWorkbook(new File("out/tmp.xls"),wb);
             WritableSheet sheet = new_wb.getSheet(0);
-
+            String surname = student.getSurname()+" "+student.getFirstname()+" "+student.getMiddlename();
             WritableCellFormat cell_surname = rs.cell(wf18_b,true,Alignment.LEFT,VerticalAlignment.TOP,Border.NONE,BorderLineStyle.NONE);
             WritableCellFormat cell_common = rs.cell(wf12,false,Alignment.LEFT,VerticalAlignment.CENTRE,Border.NONE,BorderLineStyle.NONE);
-            sheet.addCell(new Label(8, 8,student.getSurname()+" "+student.getFirstname()+" "+student.getMiddlename(), cell_surname));
+            sheet.addCell(new Label(8, 8,surname, cell_surname));
 
             WritableImage wi2 = new WritableImage(0, 8, 5, 9, student.getFoto().getData());
             sheet.addImage(wi2);
@@ -97,6 +97,12 @@ public class Raport {
             sheet.addCell(new Label(6, 16,cars, cell_common));
             sheet.addCell(new Label(12, 11,group.getDateBegin().toString(), cell_common));
             sheet.addCell(new Label(12, 12,group.getDateEnd().toString(), cell_common));
+//            int row =23;
+//            for(String d: new importData().setGraphicOne(new stringSetting().getSurnameInic(surname))){
+//                sheet.addCell(new Label(0,row++,d,cell_common_row));
+//                //row++;
+//            }
+
             new_wb.write();
             new_wb.close();
             wb.close();
@@ -245,12 +251,8 @@ perepidgotovka
         wb = Workbook.getWorkbook(new File("raport/xls/plane_B.xls"));
         new_wb = Workbook.createWorkbook(new File("out/tmp.xls"),wb);
         sheet = new_wb.getSheet(0);
-        WritableCellFormat cell = new WritableCellFormat(wf12);
         WritableCellFormat cell2 = rs.cell(wf12,true,Alignment.CENTRE,VerticalAlignment.CENTRE,Border.ALL,BorderLineStyle.THIN);
         cell2.setOrientation(Orientation.PLUS_90);
-//        sheet.addCell(new Label(5, 7, student.getSurname()+" "+student.getFirstname()+" "+student.getMiddlename(), cell));
-//        sheet.addCell(new Label(11, 1, r_data.getNumDov(), cell));
-//        sheet.addCell(new Label(23, 9, "\""+r_data.getKateg()+"\"", cell));
         /*
         fill datas
          */
@@ -262,5 +264,71 @@ perepidgotovka
         new_wb.write();
         new_wb.close();
         wb.close();
+    }
+
+    // make vedomost
+    public void make_vedomost(ObservableList<Student> studentList)throws IOException, BiffException, WriteException{
+        Workbook wb;
+        WritableWorkbook new_wb;
+        WritableSheet sheet;
+        WritableSheet sheet1;
+        WritableSheet sheet2;
+        wb = Workbook.getWorkbook(new File("raport/xls/vedomost.xls"));
+        new_wb = Workbook.createWorkbook(new File("out/tmp.xls"),wb);
+        sheet = new_wb.getSheet(0);
+        sheet1 = new_wb.getSheet(1);
+        sheet2 = new_wb.getSheet(2);
+        WritableFont wf = new WritableFont(WritableFont.ARIAL,12);
+        WritableFont wf1 = new WritableFont(WritableFont.ARIAL,12);
+        WritableCellFormat cell = new WritableCellFormat(wf);
+        WritableCellFormat cell_left = new WritableCellFormat(wf);
+        WritableCellFormat cell1 = new WritableCellFormat(wf1);
+        WritableCellFormat cell_f = new WritableCellFormat(wf);
+        cell.setAlignment(jxl.format.Alignment.CENTRE);
+        cell_f.setAlignment(jxl.format.Alignment.JUSTIFY);
+        cell_f.setVerticalAlignment(VerticalAlignment.TOP);
+        cell_left.setAlignment(jxl.format.Alignment.LEFT);
+        cell1.setWrap(true);
+        cell1.setAlignment(Alignment.LEFT);
+        cell1.setVerticalAlignment(VerticalAlignment.TOP);
+        cell1.setBorder(Border.ALL, BorderLineStyle.THIN);
+        int row=5;
+        int num=1;
+        for(Student s: studentList){
+            sheet.mergeCells(1, row, 6, row);
+            sheet.mergeCells(7, row, 8, row);
+            sheet.mergeCells(10, row, 11, row);
+            sheet1.mergeCells(1, row, 6, row);
+            sheet1.mergeCells(7, row, 8, row);
+            sheet1.mergeCells(10, row, 11, row);
+            sheet2.mergeCells(1, row, 6, row);
+            sheet2.mergeCells(7, row, 8, row);
+            sheet2.mergeCells(10, row, 11, row);
+
+            sheet.addCell(new Label(0, row, Integer.toString(num), cell1));
+            sheet.addCell(new Label(1, row, new stringSetting().getSurnameInic(s.getSurname()+" "+s.getFirstname()+" "+s.getMiddlename()), cell1));
+            sheet1.addCell(new Label(0, row, Integer.toString(num), cell1));
+            sheet1.addCell(new Label(1, row, new stringSetting().getSurnameInic(s.getSurname()+" "+s.getFirstname()+" "+s.getMiddlename()), cell1));
+            sheet2.addCell(new Label(0, row, Integer.toString(num), cell1));
+            sheet2.addCell(new Label(1, row, new stringSetting().getSurnameInic(s.getSurname()+" "+s.getFirstname()+" "+s.getMiddlename()), cell1));
+
+            sheet.addCell(new Label(7, row, "", cell1));
+            sheet.addCell(new Label(9, row, "", cell1));
+            sheet.addCell(new Label(10, row, "", cell1));
+            sheet1.addCell(new Label(7, row, "", cell1));
+            sheet1.addCell(new Label(9, row, "", cell1));
+            sheet1.addCell(new Label(10, row, "", cell1));
+            sheet2.addCell(new Label(7, row, "", cell1));
+            sheet2.addCell(new Label(9, row, "", cell1));
+            sheet2.addCell(new Label(10, row, "", cell1));
+            num++;
+            row++;
+        }
+            sheet.addCell(new Label(0, row+2, "\u0421\u0442\u0430\u0440\u043e\u0441\u0442\u0430 \u0433\u0440\u0443\u043f\u0438 _______________________________________________", cell_left));
+            sheet1.addCell(new Label(0, row+2, "\u0421\u0442\u0430\u0440\u043e\u0441\u0442\u0430 \u0433\u0440\u0443\u043f\u0438 _______________________________________________", cell_left));
+            sheet2.addCell(new Label(0, row+2, "\u0421\u0442\u0430\u0440\u043e\u0441\u0442\u0430 \u0433\u0440\u0443\u043f\u0438 _______________________________________________", cell_left));
+            new_wb.write();
+            new_wb.close();
+            wb.close();
     }
 }
